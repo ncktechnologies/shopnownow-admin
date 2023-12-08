@@ -2,7 +2,7 @@ import AuthAPI from './authInstance'
 
 const getDashboardStats = async () => {
   const response = await AuthAPI.get(`/admin/dashboard/stats`)
-  return response.data
+  return response
 }
 
 const getOne = async (data) => {

@@ -21,19 +21,20 @@ const Dashboard = () => {
     getStatistics();
   }, []);
 
-  console.log("users", users);
 
   const getStatistics = () => {
     dashboardService
       .getDashboardStats()
       .then((res) => {
         setdashboardStats(res?.data);
-        console.log("DB res", dashboardStats);
       })
       .catch((error) => {
         console.log("DB error", error);
       });
   };
+
+  console.log("DB res", dashboardStats);
+
 
   return (
     <div>
@@ -43,41 +44,41 @@ const Dashboard = () => {
           <Card>
             <Card.Body>
               <Card.Title>
+                <Link style={{ color: "#FF0303" }} to="/admins">
+                  Admins
+                </Link>
+              </Card.Title>
+              <Card.Text>{dashboardStats?.admins}</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <Link style={{ color: "#FF0303" }} to="/bands">
+                  Bands
+                </Link>
+              </Card.Title>
+              <Card.Text>{dashboardStats?.bands}</Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
                 <Link style={{ color: "#FF0303" }} to="/categories">
                   Categories
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.category_count}</Card.Text>
+              <Card.Text>{dashboardStats?.categories}</Card.Text>
             </Card.Body>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>
-                <Link style={{ color: "#FF0303" }} to="/riders">
-                  Available Riders
+                <Link style={{ color: "#FF0303" }} to="/orders">
+                  Orders
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.available_riders_count}</Card.Text>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>
-                <Link style={{ color: "#FF0303" }} to="/riders">
-                  Disabled Riders
-                </Link>
-              </Card.Title>
-              <Card.Text>{dashboardStats?.disabled_riders_count}</Card.Text>
-            </Card.Body>
-          </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>
-                <Link style={{ color: "#FF0303" }} to="/riders">
-                  Dismissed Riders
-                </Link>
-              </Card.Title>
-              <Card.Text>{dashboardStats?.dismissed_riders_count}</Card.Text>
+              <Card.Text>{dashboardStats?.orders}</Card.Text>
             </Card.Body>
           </Card>
         </CardGroup>
@@ -85,33 +86,33 @@ const Dashboard = () => {
           <Card>
             <Card.Body>
               <Card.Title className="card-title">
-                <Link style={{ color: "#FF0303" }} to="/orders">
-                  Orders
+                <Link style={{ color: "#FF0303" }} to="/payments">
+                  Payments
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.orders_count}</Card.Text>
+              <Card.Text>{dashboardStats?.payments}</Card.Text>
             </Card.Body>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>
                 <Link style={{ color: "#FF0303" }} to="products">
-                  <Link style={{ color: "#FF0303" }} to="/payments">
-                    Payments
+                  <Link style={{ color: "#FF0303" }} to="/products">
+                    Products
                   </Link>
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.payments_count}</Card.Text>
+              <Card.Text>{dashboardStats?.products}</Card.Text>
             </Card.Body>
           </Card>
           <Card>
             <Card.Body>
               <Card.Title>
-                <Link style={{ color: "#FF0303" }} to="/riders">
-                  Total Riders
+                <Link style={{ color: "#FF0303" }} to="/special-requests">
+                  Special requests
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.riders_count}</Card.Text>
+              <Card.Text>{dashboardStats?.special_requests}</Card.Text>
             </Card.Body>
           </Card>
           <Card>
@@ -121,7 +122,7 @@ const Dashboard = () => {
                   Users
                 </Link>
               </Card.Title>
-              <Card.Text>{dashboardStats?.users_count}</Card.Text>
+              <Card.Text>{dashboardStats?.users}</Card.Text>
             </Card.Body>
           </Card>
         </CardGroup>

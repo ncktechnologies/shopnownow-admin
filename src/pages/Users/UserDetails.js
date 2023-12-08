@@ -33,7 +33,7 @@ const UserDetails = () => {
                   onClick={() => navigate(-1)}
                 >
                   <div to="#" className="userInfo__back">
-                    <Button
+                    <Button style={{color: '#ff0303'}}
                       icon={<BsArrowLeft />}
                       type="link"
                       className="hover:text-blue-100 flex gap-1 items-center hover:gap-2 ease-in-out duration-300"
@@ -59,10 +59,10 @@ const UserDetails = () => {
                     >{`${`${singleData?.user?.name}` || ""} `}</Typography.Title>
                   }
                   description={
-                    <div className="metaDescription">
+                    <div className="metaDescription" >
                       {singleData?.user?.phone_number && (
                         <div className="flex align-middle items-center gap-3 flex-wrap">
-                          <a
+                          <a style={{color: '#ff0303'}}
                             className="text-sm"
                             href={`tel:${singleData?.user?.phone_number}`}
                           >
@@ -71,8 +71,8 @@ const UserDetails = () => {
                           </a>
                         </div>
                       )}
-                      <div className="flex align-middle items-center gap-3 flex-wrap ">
-                        <a
+                      <div className="flex align-middle items-center gap-3 flex-wrap "> 
+                        <a  style={{color: '#ff0303'}}
                           href={`mailto:${singleData?.user?.email}`}
                           className="text-sm"
                         >

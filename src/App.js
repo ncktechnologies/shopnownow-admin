@@ -81,6 +81,8 @@ import ListPricingParameters from "./pages/PricingParameters/ListPricingParamete
 import Chats from "./pages/Chats/Chats";
 import NotificationDetails from "./pages/Notification/NotficationDetails";
 import CategoryDetails from "./pages/Category/CategoryDetails";
+import Bands from "./pages/Bands/Bands";
+import BandDetails from "./pages/Bands/BandDetails";
 // import Settings from "./pages/Settings";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -255,6 +257,10 @@ function App() {
             />
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/details/:id" element={<CategoryDetails />} />
+
+            <Route path="/bands" element={<Bands/>} />
+            <Route path="/bands/details/:id" element={<BandDetails />} />
+
             <Route path="/companies" element={<Companies />} />
             <Route
               path="/company/details/:id/:slug"
