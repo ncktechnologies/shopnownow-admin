@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: 'Inter' !important;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Inter' !important;
+}
+
+.ant-menu-inline .ant-menu-item:after, .ant-menu-vertical-left .ant-menu-item:after, .ant-menu-vertical-right .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after {
+  border-right: #ff0303 !important;
+}
+
+.ant-layout {
+  font-family: 'Inter', sans-serif !important;
+
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #ff0303 !important;
+}
+
+.ant-tabs-ink-bar {
+  background: #ff0303 !important;
+
+}
