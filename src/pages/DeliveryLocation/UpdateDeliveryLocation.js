@@ -74,7 +74,7 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
       band_id: deliveryLocation.band_id,
     });
 
-    deliveryLocation.hidden === 1 ? setChecked(true) : setChecked(false);
+    deliveryLocation.hidden === 0 ? setChecked(true) : setChecked(false);
   }, [deliveryLocation]);
 
   const clearFormData = () => {
@@ -90,7 +90,7 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
     e.preventDefault();
     const data = {
       location: deliveryLocationFormData.location,
-      hidden: checked === true ? "1" : "0",
+      hidden: checked === false ? "1" : "0",
       price: deliveryLocationFormData.price,
       band_id: deliveryLocationFormData.band_id,
       delivery_id: deliveryLocation.id
@@ -174,7 +174,7 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
             </Form.Group>
 
             <Form.Group className="mt-4" controlId="exampleForm.ControlSelect1">
-              <Form.Label>Hide location</Form.Label>
+              <Form.Label>Show location</Form.Label>
               <Switch
                 style={{ backgroundColor: "#ff0303", marginLeft: "10px" }}
                 checked={checked}

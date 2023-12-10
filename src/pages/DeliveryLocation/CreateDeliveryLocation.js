@@ -81,7 +81,7 @@ function CreateDeliveryLocation() {
 
     const formData = {
       location: deliveryLocationFormData.location,
-      hidden: checked === true ? "1" : "0",
+      hidden: checked === false ? "1" : "0",
       price: deliveryLocationFormData.price,
      band_id: deliveryLocationFormData.band_id
     };
@@ -162,7 +162,7 @@ function CreateDeliveryLocation() {
 
             <Form.Group  className="mt-4" controlId="exampleForm.ControlSelect1"
             >
-            <Form.Label>Hide location</Form.Label>
+            <Form.Label>Show location</Form.Label>
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
             
             checked={checked}
