@@ -4,9 +4,11 @@ import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateCategory from './UpdateCategory'
+import UpdateCoupon from './UpdateCoupon'
+import { NumericFormat } from 'react-number-format'
 
-const CategoryTable = ({ data, loading, hideShowCategory }) => {
+
+const CouponTable = ({ data, loading }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -25,11 +27,11 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Code',
+      dataIndex: 'code',
+      key: 'code',
       ...getColumnSearchProps({
-        dataIndex: 'name',
+        dataIndex: 'code',
         handleReset,
         searchInput,
         handleSearch,
@@ -41,30 +43,27 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
     },
 
     {
-      title: 'Delivery',
-      dataIndex: 'delivery_option',
-      key: 'delivery_option',
-      ...getColumnSearchProps({
-        dataIndex: 'delivery_option',
-        handleReset,
-        searchInput,
-        handleSearch,
-        setSearchedColumn,
-        searchText,
-        setSearchText,
-        searchedColumn,
-      }),
-      render: (delivery_option) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {delivery_option === 1 ? "Yes" : "No"}</span>
+      title: 'Value',
+      dataIndex: 'value',
+      key: 'value',
+      render: (value) => (
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <NumericFormat
+            value={value}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          />
+        </span>
       ),
     },
 
     {
-      title: 'Discount option',
-      dataIndex: 'discount_option',
-      key: 'discount_option',
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
       ...getColumnSearchProps({
-        dataIndex: 'discount_option',
+        dataIndex: 'type',
         handleReset,
         searchInput,
         handleSearch,
@@ -73,36 +72,44 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
         setSearchText,
         searchedColumn,
       }),
-      render: (discount_option) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {discount_option === 1 ? "Yes" : "No"}</span>
+    },
+    {
+      title: 'Start date',
+      dataIndex: 'start_date',
+      key: 'start_date',
+      ...getColumnSearchProps({
+        dataIndex: 'start_date',
+        handleReset,
+        searchInput,
+        handleSearch,
+        setSearchedColumn,
+        searchText,
+        setSearchText,
+        searchedColumn,
+      }),
+      render: (start_date) => (
+        <span style={{ whiteSpace: 'nowrap' }}> {moment(start_date).format('DD MMM YYYY')}</span>
       ),
     },
     {
-      title: 'Image',
-      key: 'id',
-      dataIndex: 'thumbnail',
-      align: 'center',
-      render: (thumbnail) => (
-        <Link to={`${thumbnail}`}>
-          {thumbnail ? (
-            <img
-              style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-              }}
-              src={thumbnail}
-              height={60}
-              width={60}
-              alt='avatar'
-            />
-          ) : (
-            <Avatar style={{ backgroundColor: '#3f8bcaa1' }} icon={<UserOutlined />} size={50} />
-          )}
-        </Link>
+      title: 'End date',
+      dataIndex: 'end_date',
+      key: 'end_date',
+      ...getColumnSearchProps({
+        dataIndex: 'end_date',
+        handleReset,
+        searchInput,
+        handleSearch,
+        setSearchedColumn,
+        searchText,
+        setSearchText,
+        searchedColumn,
+      }),
+      render: (end_date) => (
+        <span style={{ whiteSpace: 'nowrap' }}> {moment(end_date).format('DD MMM YYYY')}</span>
       ),
     },
+
     {
       title: 'Created At',
       dataIndex: 'created_at',
@@ -130,19 +137,15 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
         <>
           <div>
           <Button style={{ marginRight: '5px' }} title='View category details'>
-              <Link to={`/categories/details/${singleData?.id}`}>{'View'}</Link>
+              <Link to={`/coupons/details/${singleData?.id}`}>{'View'}</Link>
             </Button>
 
-            <Button style={{ marginRight: '5px' }} title='Edit category'>
-              <UpdateCategory category={singleData} />
+            <Button style={{ marginRight: '5px' }} title='Edit band'>
+              <UpdateCoupon coupon={singleData} />
             </Button>
-       
+    
 
-            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
-            
-              checked={singleData?.hidden === 0}
-              onChange={() => hideShowCategory(singleData?.id)}
-            />
+          
           </div>
         </>
       ),
@@ -163,4 +166,4 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
   )
 }
 
-export default CategoryTable
+export default CouponTable

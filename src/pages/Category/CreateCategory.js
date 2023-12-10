@@ -1,17 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createCategory, getAllCategories } from "../../redux/categorySlice";
+import { getAllBands } from "../../redux/bandSlice";
 import { notification, Avatar } from "antd";
 
-
-
 function CreateCategory() {
-
   const initialFormState = {
     name: "",
     tax: "",
@@ -19,12 +17,17 @@ function CreateCategory() {
     discount_option: "",
     discount_type: "",
     discount_value: "",
-    thumbnail:"",
-    band_id: ""
-
+    thumbnail: "",
+    band_id: "",
   };
 
   const [show, setShow] = useState(false);
+
+  const { band } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getAllBands());
+  }, []);
 
   const [categoryFormData, setcategoryFormData] = useState(initialFormState);
   const [image, setImage] = useState("");
@@ -35,10 +38,19 @@ function CreateCategory() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-
   const onChangeImage = (e) => {
     setImage(e.target.files[0]);
   };
+
+  const band_list =
+    band &&
+    band?.data?.map((band, key) => {
+      return (
+        <option value={band?.id} key={key}>
+          {band?.name}
+        </option>
+      );
+    });
 
   const handleInputChange = (event) => {
     event.preventDefault();
@@ -72,6 +84,15 @@ function CreateCategory() {
       discount_type: selectedValue,
     });
   };
+
+  const handleBandChange = (event) => {
+    const selectedValue = event.target.value;
+    setcategoryFormData({
+      ...categoryFormData,
+      band_id: selectedValue,
+    });
+  };
+
   const clearFormData = () => {
     setcategoryFormData({
       name: "",
@@ -80,22 +101,25 @@ function CreateCategory() {
       discount_option: "",
       discount_type: "",
       discount_value: "",
-      thumbnail:"",
-      band_id: ""
+      thumbnail: "",
+      band_id: "",
     });
-
   };
-
-
-
-
-
 
   const handleCreateCategory = (e) => {
     e.preventDefault();
     var formData = new FormData();
     formData.append("name", categoryFormData.name);
-    formData.append("description", categoryFormData.description);
+    formData.append("tax", categoryFormData.tax);
+    formData.append("delivery_option", categoryFormData.delivery_option);
+    formData.append("discount_option", categoryFormData.discount_option);
+    formData.append(
+      "discount_type",
+      categoryFormData.discount_type === "1" ? "fixed" : "percentage"
+    );
+    formData.append("discount_value", categoryFormData.discount_value);
+    formData.append("thumbnail", image);
+    formData.append("band_id", categoryFormData.band_id);
 
     setConfirmLoading(true);
     dispatch(createCategory(formData))
@@ -153,8 +177,7 @@ function CreateCategory() {
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-         
-            
+
             <Form.Group
               controlId="exampleForm.ControlSelect1"
               style={{ marginBottom: "10px" }}
@@ -167,11 +190,12 @@ function CreateCategory() {
                 onChange={handleDeliveryChange}
                 value={categoryFormData.delivery_option}
               >
+                <option>Select delivery option</option>
+
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
             </Form.Group>
-
 
             <Form.Group
               controlId="exampleForm.ControlSelect1"
@@ -185,11 +209,12 @@ function CreateCategory() {
                 onChange={handleDiscountOption}
                 value={categoryFormData.discount_option}
               >
+                <option>Select discount option</option>
+
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
             </Form.Group>
-
 
             <Form.Group
               controlId="exampleForm.ControlSelect1"
@@ -197,14 +222,33 @@ function CreateCategory() {
             >
               <Form.Label>Discount type</Form.Label>
               <Form.Select
-                name="discount_type" // Add the "name" attribute
+                name="discount_option" // Add the "name" attribute
                 aria-label="Default select example"
                 required
                 onChange={handleDiscountType}
-                value={categoryFormData.delivery_option}
+                value={categoryFormData.discount_type}
               >
-                <option value="1">Yes</option>
-                <option value="0">No</option>
+                <option>Select discount option</option>
+
+                <option value="1">Fixed</option>
+                <option value="0">Percentage</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group
+              controlId="exampleForm.ControlSelect1"
+              style={{ marginBottom: "10px" }}
+            >
+              <Form.Label>Select band</Form.Label>
+              <Form.Select
+                name="band_id" // Add the "name" attribute
+                aria-label="Default select example"
+                required
+                onChange={handleBandChange}
+                value={categoryFormData.band_id}
+              >
+                <option>Select band</option>
+                {band_list}
               </Form.Select>
             </Form.Group>
 
@@ -226,9 +270,9 @@ function CreateCategory() {
                 onChange={(evnt) => onChangeImage(evnt)}
               />
             </Form.Group>
-      
 
-            <Button style={{marginTop: '10px'}}
+            <Button
+              style={{ marginTop: "10px", background: '#ff0303', border: 'none' }}
               variant="primary"
               type="submit"
               disabled={confirmLoading ? true : false}

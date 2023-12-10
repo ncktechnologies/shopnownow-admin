@@ -9,6 +9,7 @@ import { createProduct, getAllProducts } from "../../redux/productSlice";
 import { getAllCategories } from "../../redux/categorySlice";
 import { notification } from "antd";
 
+
 const initialFormState = {
   name: "",
   category_id: "",

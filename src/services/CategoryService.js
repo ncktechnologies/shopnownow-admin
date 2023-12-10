@@ -15,8 +15,8 @@ const createCategory = async (data) => {
   return response.data
 }
 
-const editCategory = async (data) => {
-  const response = await AuthAPI.post(`/admin/category/update/${data.category_id}`, data)
+const editCategory = async (formData) => {
+  const response = await AuthAPI.post(`/admin/category/update/${formData.get('id')}`, formData)
   return response.data
 }
 

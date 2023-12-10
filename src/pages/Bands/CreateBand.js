@@ -38,8 +38,6 @@ function CreateBand() {
     });
   };
 
-  
-
   const clearFormData = () => {
     setbandFormData({
       name: "",
@@ -52,7 +50,7 @@ function CreateBand() {
     });
   };
 
-  const handleCreateCategory = (e) => {
+  const handleCreateBand = (e) => {
     e.preventDefault();
     const formData = {
       name: bandFormData.name,
@@ -62,7 +60,7 @@ function CreateBand() {
       bulk_discount_amount: bandFormData.bulk_discount_amount,
       bulk_discount_percentage: bandFormData.bulk_discount_percentage,
       general_discount: bandFormData.general_discount,
-    }
+    };
 
     setConfirmLoading(true);
     dispatch(createBand(formData))
@@ -100,7 +98,7 @@ function CreateBand() {
           <Modal.Title>Create band</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateCategory}>
+          <Form onSubmit={handleCreateBand}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -111,7 +109,7 @@ function CreateBand() {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>description </Form.Label>
               <Form.Control
                 type="text"
@@ -121,7 +119,7 @@ function CreateBand() {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label> Minimum </Form.Label>
               <Form.Control
                 type="text"
@@ -130,7 +128,7 @@ function CreateBand() {
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label> Bulk discount amount </Form.Label>
               <Form.Control
                 type="text"
@@ -139,7 +137,7 @@ function CreateBand() {
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label> Bulk discount percentage </Form.Label>
               <Form.Control
                 type="text"
@@ -148,7 +146,7 @@ function CreateBand() {
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label> General discount </Form.Label>
               <Form.Control
                 type="text"
@@ -158,20 +156,25 @@ function CreateBand() {
               />
             </Form.Group>
 
-            <Form.Select
-  name="discount_enabled"
-  onChange={(evt) => setbandFormData({
-    ...bandFormData,
-    discount_enabled: evt.target.value,
-  })}
-  aria-label="Default select example"
-  value={bandFormData.discount_enabled}
->
-  <option value="1">Yes</option>
-  <option value="0">No</option>
-</Form.Select>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label> Discount enabled </Form.Label>
+              <Form.Select
+                name="discount_enabled"
+                onChange={(evt) =>
+                  setbandFormData({
+                    ...bandFormData,
+                    discount_enabled: evt.target.value,
+                  })
+                }
+                aria-label="Default select example"
+                value={bandFormData.discount_enabled}
+              >
+                <option>Select option to enable discount</option>
 
-
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </Form.Select>
+            </Form.Group>
 
             <Button
               style={{

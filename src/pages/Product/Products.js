@@ -51,7 +51,6 @@ const Products = (props) => {
     dispatch(getAllProducts());
   }, []);
 
-  console.log(products?.data);
 
   return (
     <div>

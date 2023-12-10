@@ -83,6 +83,11 @@ import NotificationDetails from "./pages/Notification/NotficationDetails";
 import CategoryDetails from "./pages/Category/CategoryDetails";
 import Bands from "./pages/Bands/Bands";
 import BandDetails from "./pages/Bands/BandDetails";
+import Coupons from "./pages/Coupons/Coupons";
+import CouponDetails from "./pages/Coupons/CouponDetails";
+import DeliveryLocations from "./pages/DeliveryLocation/DeliveryLocations";
+import DeliveryLocationDetails from "./pages/DeliveryLocation/DeliveryLocationDetails";
+import ListLocations from "./pages/Locations/ListLocations";
 // import Settings from "./pages/Settings";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -261,6 +266,12 @@ function App() {
             <Route path="/bands" element={<Bands/>} />
             <Route path="/bands/details/:id" element={<BandDetails />} />
 
+            <Route path="/delivery" element={<DeliveryLocations/>} />
+            <Route path="/delivery/details/:id" element={<DeliveryLocationDetails />} />
+
+            <Route path="/coupons" element={<Coupons/>} />
+            <Route path="/coupons/details/:id" element={<CouponDetails />} />
+
             <Route path="/companies" element={<Companies />} />
             <Route
               path="/company/details/:id/:slug"
@@ -317,7 +328,7 @@ function App() {
             <Route path="banners" element={<Banners />} />
             <Route path="/banner/details/:id" element={<BannerDetails />} />
             <Route path="/pickupcharge" element={<ListPickupCharges />} />
-            <Route path="/locations" element={<ListHubLocations />} />
+            <Route path="/locations" element={<ListLocations />} />
             <Route
               path="/pricing-parameters"
               element={<ListPricingParameters />}

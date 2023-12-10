@@ -68,7 +68,7 @@ const AppSider = () => {
     getItem('Orders', 'orders', <UnorderedListOutlined />),
 
     getItem('Payments', 'payments', <BiWallet size={16} />),
-    getItem('Delivery Locations', 'delivery-locations', <BiLocationPlus />),
+    getItem('Delivery Locations', 'delivery', <BiLocationPlus />),
     getItem('Special Requests', 'reports', <CgNotes />),
     getItem('Locations', 'locations', <BiLocationPlus />),
     getItem('Delivery Timeslots', 'timeslots', <BiTime size={16} />),

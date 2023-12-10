@@ -17,8 +17,6 @@ const Categories = () => {
     dispatch(getAllCategories())
   }, [])
 
-  console.log(categories)
-
   const [isChecked, setIsChecked] = useState();
 
 

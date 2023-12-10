@@ -4,9 +4,11 @@ import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateHubLocation from './UpdateLocation'
+import UpdateDeliveryLocation from './UpdateDeliveryLocation'
+import { NumericFormat } from 'react-number-format'
 
-const LocationTable = ({ data, loading, hideShowLocation }) => {
+
+const DeliveryLocationTable = ({ data, loading, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -24,11 +26,11 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'Location',
+      dataIndex: 'location',
+      key: 'location',
       ...getColumnSearchProps({
-        dataIndex: 'name',
+        dataIndex: 'location',
         handleReset,
         searchInput,
         handleSearch,
@@ -37,6 +39,22 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
         setSearchText,
         searchedColumn,
       }),
+    },
+
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (price) => (
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <NumericFormat
+            value={price}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          />
+        </span>
+      ),
     },
 
     {
@@ -59,22 +77,28 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
     },
 
     {
-      title: 'Hide/Unhide',
+      title: 'Actions',
       key: 'id',
       align: 'center',
       render: (singleData) => (
         <>
           <div>
-          {/* <Button style={{ marginRight: '5px' }} title='Edit Location'>
-              <UpdateHubLocation location={singleData} />
-            </Button> */}
+      
+  <Button style={{ marginRight: '5px' }} title='View category details'>
+              <Link to={`/delivery/details/${singleData?.id}`}>{'View'}</Link>
+            </Button>
 
+            <Button style={{ marginRight: '5px' }} title='Edit delivery location'>
+              <UpdateDeliveryLocation deliveryLocation={singleData} />
+            </Button>
 
-            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
-            
-            checked={singleData?.hidden === 0}
-            onChange={() => hideShowLocation(singleData?.id)}
-          />
+            <Button
+            danger
+            onClick={() => handleDelete(singleData)}
+            title='delete delivery location'
+          >
+            delete
+          </Button>
           </div>
         </>
       ),
@@ -95,4 +119,4 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
   )
 }
 
-export default LocationTable
+export default DeliveryLocationTable
