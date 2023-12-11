@@ -88,6 +88,10 @@ import CouponDetails from "./pages/Coupons/CouponDetails";
 import DeliveryLocations from "./pages/DeliveryLocation/DeliveryLocations";
 import DeliveryLocationDetails from "./pages/DeliveryLocation/DeliveryLocationDetails";
 import ListLocations from "./pages/Locations/ListLocations";
+import ListSpecialRequests from "./pages/SpecialRequests/ListSpecialRequests";
+import SpecialRequestDetails from "./pages/SpecialRequests/SpecialRequestDetails";
+import TimeSlots from "./pages/TimeSlot/TimeSlots";
+import TimeSlotDetails from "./pages/TimeSlot/TimeSlotDetails";
 // import Settings from "./pages/Settings";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -266,6 +270,9 @@ function App() {
             <Route path="/bands" element={<Bands/>} />
             <Route path="/bands/details/:id" element={<BandDetails />} />
 
+            <Route path="/time-slots" element={<TimeSlots/>} />
+            <Route path="/time-slots/details/:id" element={<TimeSlotDetails />} />
+
             <Route path="/delivery" element={<DeliveryLocations/>} />
             <Route path="/delivery/details/:id" element={<DeliveryLocationDetails />} />
 
@@ -304,6 +311,10 @@ function App() {
 
             <Route path="orders" element={<ListOrders />} />
             <Route path="/order/details/:id" element={<OrderDetails />} />
+
+            <Route path="special-requests" element={<ListSpecialRequests />} />
+            <Route path="/special-requests/details/:id" element={<SpecialRequestDetails />} />
+
             <Route path="users" element={<ListUsers />} />
             <Route path="/user/details/:id/:email" element={<UserDetails />} />
 

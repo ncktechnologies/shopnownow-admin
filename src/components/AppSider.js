@@ -69,9 +69,9 @@ const AppSider = () => {
 
     getItem('Payments', 'payments', <BiWallet size={16} />),
     getItem('Delivery Locations', 'delivery', <BiLocationPlus />),
-    getItem('Special Requests', 'reports', <CgNotes />),
+    getItem('Special Requests', 'special-requests', <CgNotes />),
     getItem('Locations', 'locations', <BiLocationPlus />),
-    getItem('Delivery Timeslots', 'timeslots', <BiTime size={16} />),
+    getItem('Delivery Timeslots', 'time-slots', <BiTime size={16} />),
     getItem('Site Data', 'data', <BiData size={16} />),
     getItem('Quick Guide', 'guide', <BiArrowFromLeft size={16} />),
     // getItem('Contact-Support', 'contacts', <ContactsOutlined />),

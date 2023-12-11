@@ -32,3 +32,18 @@ code {
   color: #ff0303 !important;
 
 }
+
+.ant-layout, .ant-layout, .ant-table-tbody>tr>td {
+  font-family: 'Inter', sans-serif !important;
+
+}
+
+.ant-menu-inline.ant-menu-root .ant-menu-item>.ant-menu-title-content, .ant-menu-inline.ant-menu-root .ant-menu-submenu-title>.ant-menu-title-content {
+  font-family: 'Inter', sans-serif !important;
+
+}
+
+.ant-btn>span {
+  font-family: 'Inter', sans-serif !important;
+
+}

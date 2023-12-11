@@ -45,7 +45,8 @@ import chat from "../chatSlice";
 import band from '../bandSlice'
 import coupon from '../couponSlice'
 import deliveryLocation from '../deliveryLocationSlice'
-
+import special_requests from '../specialRequestSlice'
+import timeslot from '../timeSlotSlice'
 
 const rootReducer = combineReducers({
   auth,
@@ -91,7 +92,7 @@ const rootReducer = combineReducers({
   location,
   pricing,
   chat,
-  band, coupon, deliveryLocation
+  band, coupon, deliveryLocation, special_requests, timeslot
 });
 
 export default rootReducer;

@@ -65,7 +65,7 @@ const AppHeader = () => {
 
       <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
         <Link to="settings" style={{color: '#ff0303'}}>
-        <RiSettings2Line size={16} />
+       Settings <RiSettings2Line size={16} />
         </Link>
       </Button>
       <Button style={{color: '#fff', backgroundColor:'#FF0303'}} onClick={() => dispatch(logout())}>
