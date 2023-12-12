@@ -38,10 +38,10 @@ export const createTimeSlot = createAsyncThunk(
 )
 
 export const hideTimeSlot = createAsyncThunk(
-    'timeSlot/hideShowTimeSlot',
+    'timeSlot/hideTimeSlot',
     async (data, { rejectWithValue }) => {
       try {
-        const response = await timeSlotService.hideShowTimeSlot(data)
+        const response = await timeSlotService.hideTimeSlot(data)
         return response.data
       } catch (error) {
         return rejectWithValue(error?.response?.data)
@@ -50,10 +50,10 @@ export const hideTimeSlot = createAsyncThunk(
   )
 
   export const showTimeSlot = createAsyncThunk(
-    'timeSlot/hideShowTimeSlot',
+    'timeSlot/showTimeSlot',
     async (data, { rejectWithValue }) => {
       try {
-        const response = await timeSlotService.hideShowTimeSlot(data)
+        const response = await timeSlotService.showTimeSlot(data)
         return response.data
       } catch (error) {
         return rejectWithValue(error?.response?.data)

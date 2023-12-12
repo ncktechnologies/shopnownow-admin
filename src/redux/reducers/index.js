@@ -30,7 +30,7 @@ import orders from "../orderSlice";
 import payments from "../paymentSlice";
 import contacts from "../supportSlice";
 import notifications from "../notificationSlice";
-import banners from "../bannerSlice";
+import quickGuide from "../quickGuideSlice";
 import top from "../topRatedProductSlice";
 import topup from "../topupSlice";
 import jobs from "../jobSlice";
@@ -47,6 +47,9 @@ import coupon from '../couponSlice'
 import deliveryLocation from '../deliveryLocationSlice'
 import special_requests from '../specialRequestSlice'
 import timeslot from '../timeSlotSlice'
+import sitedata from '../siteDataSlice'
+import settings from '../settingsSlice'
+
 
 const rootReducer = combineReducers({
   auth,
@@ -77,7 +80,7 @@ const rootReducer = combineReducers({
   payments,
   contacts,
   notifications,
-  banners,
+  quickGuide,
   buyers,
   sellers,
   both,
@@ -92,7 +95,7 @@ const rootReducer = combineReducers({
   location,
   pricing,
   chat,
-  band, coupon, deliveryLocation, special_requests, timeslot
+  band, coupon, deliveryLocation, special_requests, timeslot, sitedata, settings
 });
 
 export default rootReducer;

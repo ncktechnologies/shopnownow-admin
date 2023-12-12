@@ -64,7 +64,7 @@ const AppHeader = () => {
       <div>
 
       <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
-        <Link to="settings" style={{color: '#ff0303'}}>
+        <Link to="setting" style={{color: '#ff0303'}}>
        Settings <RiSettings2Line size={16} />
         </Link>
       </Button>

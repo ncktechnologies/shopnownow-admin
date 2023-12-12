@@ -13,7 +13,6 @@ const Companies = () => {
 
   useEffect(() => {
     dispatch(getAllCompanies())
-    console.log('Companies', companies)
   }, [])
 
   const handleDelete = ({ id }) => {

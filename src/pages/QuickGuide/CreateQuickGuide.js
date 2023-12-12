@@ -6,19 +6,19 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch } from 'react-redux'
 import Messages from '../../ToastMessages/Messages'
-import { createBanner, getAllBanners } from '../../redux/bannerSlice'
+import { createQuickGuide, getAllQuickGuides } from '../../redux/quickGuideSlice'
 import { notification } from 'antd'
 
 const initialFormState = {
   title: '',
-  banner: '',
-  description: '',
+  body: '',
+  image: '',
 }
 
-function CreateBanner() {
+function CreateQuickGuide() {
   const [show, setShow] = useState(false)
   const [image, setImage] = useState('')
-  const [bannerFormData, setbannerFormData] = useState(initialFormState)
+  const [quickGuideFormData, setQuickGuideFormData] = useState(initialFormState)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
   const dispatch = useDispatch()
@@ -33,88 +33,92 @@ function CreateBanner() {
   const handleInputChange = (event) => {
     event.preventDefault()
     const { name, value } = event.target
-    setbannerFormData({
-      ...bannerFormData,
+    setQuickGuideFormData({
+      ...quickGuideFormData,
       [name]: value,
     })
   }
 
   const clearFormData = () => {
-    setbannerFormData({
+    setQuickGuideFormData({
       title: '',
-      banner: '',
-      description: '',
+      body: '',
+      image: '',
     })
     setImage('')
   }
 
-  const handleCreateBanner = (e) => {
+  const handleCreateQuickGuide = (e) => {
     e.preventDefault()
     var formData = new FormData()
-    formData.append('title', bannerFormData.title)
-    formData.append('banner', image)
-    formData.append('description', bannerFormData.description)
+    formData.append('title', quickGuideFormData.title)
+    formData.append('image', image)
+    formData.append('body', quickGuideFormData.body)
 
     setConfirmLoading(true)
-    dispatch(createBanner(formData))
+    dispatch(createQuickGuide(formData))
       .then((response) => {
         setConfirmLoading(false)
-        if (response.type === 'banner/create/fulfilled') {
-          dispatch(getAllBanners())
+        if (response.type === 'quickGuide/create/fulfilled') {
+          dispatch(getAllQuickGuides())
           handleClose()
           clearFormData()
           console.log('response act', response)
           notification.success({
-            message: 'Banner deleted successfully',
+            message: 'quick guide created successfully',
           })
-        } else if (response.type === 'banner/create/rejected') {
+        } else if (response.type === 'quickGuide/create/rejected') {
           notification.error({
-            message: response?.payload?.message || 'Error deleting banner, please try again',
+            message: response?.payload?.message || 'Error created quick guide, please try again',
           })
         }
       })
       .catch((error) => {
         setConfirmLoading(false)
-        console.log('error notificatom', 'Error creating  banner, please try again')
+        console.log('error notification', 'Error creating  quick guide, please try again')
       })
   }
 
   return (
     <>
-      <span onClick={handleShow}>Create banner</span>
+      <span onClick={handleShow}>Create quick guide</span>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Create banner</Modal.Title>
+          <Modal.Title>Create quick guide</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleCreateBanner}>
+          <Form onSubmit={handleCreateQuickGuide}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type='text'
                 name='title'
-                placeholder='Enter title name'
+                placeholder='Enter title'
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
             <Form.Group className='mb-3' controlId='formBasicPassword'>
-              <Form.Label>Description </Form.Label>
+              <Form.Label>Body </Form.Label>
               <Form.Control
                 type='text'
-                name='description'
-                placeholder='description'
+                name='body'
+                placeholder='body'
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
             <Form.Group className='mb-3' controlId='formBasicPassword'>
-              <Form.Label>banner (Optional)</Form.Label>
+              <Form.Label>Image</Form.Label>
               <Form.Control type='file' onChange={(evnt) => onChangeImage(evnt)} />
             </Form.Group>
 
-            <Button variant='primary' type='submit' disabled={confirmLoading ? true : false}>
+            <Button variant='primary' type='submit' disabled={confirmLoading ? true : false}  style={{
+                background: "#ff0303",
+                color: "#fff",
+                border: "none",
+              }}>
               {confirmLoading ? 'Please wait...' : 'Submit'}
             </Button>
           </Form>
@@ -125,4 +129,4 @@ function CreateBanner() {
   )
 }
 
-export default CreateBanner
+export default CreateQuickGuide

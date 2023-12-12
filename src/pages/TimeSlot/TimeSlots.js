@@ -17,7 +17,6 @@ const TimeSlots = () => {
     dispatch(getAllTimeSlots())
   }, [])
 
-  console.log(timeslot)
 
   const [checked, setIsChecked] =useState(null)
 
@@ -49,17 +48,18 @@ const TimeSlots = () => {
     
       };
 
-      const handleHidetimeSlot = (id) => {
+      const handleHideTimeSlot = (id) => {
   
         dispatch(hideTimeSlot(id))
         .then((response)=> {
-          if (response.type === "timeSlot/hidetimeSlot/fulfilled") {
+          console.log(response)
+          if (response.type === "timeSlot/hideTimeSlot/fulfilled") {
             setIsChecked(false)
             dispatch(getAllTimeSlots());
                   notification.success({
                     message: " time slot hidden successfully",
                   });
-                } else if (response.type === "timeSlot/hidetimeSlot/rejected") {
+                } else if (response.type === "timeSlot/hideTimeSlot/rejected") {
                   notification.error({
                     message:
                       response?.payload?.message ||
@@ -90,8 +90,8 @@ const TimeSlots = () => {
 {timeslot?.data?.timeSlots && (<TimeSlotTable
         data={timeslot?.data?.timeSlots}
         loading={timeslot.loading}
-        showTimeSlot={showTimeSlot}
-        hideTimeSlot={hideTimeSlot}
+        showTimeSlot={handleShowTimeSlot}
+        hideTimeSlot={handleHideTimeSlot}
       />)}
 
       

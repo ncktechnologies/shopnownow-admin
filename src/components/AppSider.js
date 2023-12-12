@@ -72,9 +72,8 @@ const AppSider = () => {
     getItem('Special Requests', 'special-requests', <CgNotes />),
     getItem('Locations', 'locations', <BiLocationPlus />),
     getItem('Delivery Timeslots', 'time-slots', <BiTime size={16} />),
-    getItem('Site Data', 'data', <BiData size={16} />),
-    getItem('Quick Guide', 'guide', <BiArrowFromLeft size={16} />),
-    // getItem('Contact-Support', 'contacts', <ContactsOutlined />),
+    getItem('Site Data', 'sitedata', <BiData size={16} />),
+    getItem('Quick Guide', 'quickguide', <BiArrowFromLeft size={16} />),
   ]
 
 

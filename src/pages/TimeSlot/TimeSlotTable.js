@@ -93,8 +93,8 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
 
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
             
-              checked={singleData?.hidden === 0}
-              onChange={singleData?.hidden === 1 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
+              checked={singleData?.is_available === 1}
+              onChange={singleData?.is_available === 0 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
             />
     
 

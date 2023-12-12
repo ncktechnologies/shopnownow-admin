@@ -20,10 +20,7 @@ const editLocation = async (data) => {
   return response.data
 }
 
-const hideShowLocation = async (data) => {
-  const response = await AuthAPI.post(`/admin/location/hide/${data}`)
-  return response.data
-}
+
 
 
 export const locationService = {
@@ -31,5 +28,4 @@ export const locationService = {
   getOne,
   createLocation,
   editLocation,
-  hideShowLocation,
 }

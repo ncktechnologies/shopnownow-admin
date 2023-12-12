@@ -20,7 +20,7 @@ const hideTimeSlot = async (data) => {
     return response.data
   }
   
-  const ShowTimeSlot = async (data) => {
+  const showTimeSlot = async (data) => {
     const response = await AuthAPI.post(`/admin/delivery-time-slots/unhide/${data}`)
     return response.data
   }
@@ -32,5 +32,5 @@ export const timeSlotService = {
   getAll,
   getOne,
   createTimeSlot,
-  hideTimeSlot, ShowTimeSlot
+  hideTimeSlot, showTimeSlot
 }

@@ -63,8 +63,7 @@ import ListPayments from "./pages/Payments/ListPayments";
 import PaymentDetails from "./pages/Payments/PaymentDetails";
 import ListContacts from "./pages/ContactSupport/ListContacts";
 import Notifications from "./pages/Notification/Notifications";
-import Banners from "./pages/Banner/Banners";
-import BannerDetails from "./pages/Banner/BannerDetails";
+
 import SupportDetails from "./pages/ContactSupport/SupportDetails";
 import ListTopup from "./pages/TopUp/ListTopup";
 import TopupDetails from "./pages/TopUp/TopupDetails";
@@ -92,6 +91,9 @@ import ListSpecialRequests from "./pages/SpecialRequests/ListSpecialRequests";
 import SpecialRequestDetails from "./pages/SpecialRequests/SpecialRequestDetails";
 import TimeSlots from "./pages/TimeSlot/TimeSlots";
 import TimeSlotDetails from "./pages/TimeSlot/TimeSlotDetails";
+import SiteData from "./pages/SiteData/SiteData";
+import QuickGuides from "./pages/QuickGuide/QuickGuides";
+import Setting from "./pages/Setting/Setting";
 // import Settings from "./pages/Settings";
 
 const Login = lazy(() => import("./pages/Auth/Login"));
@@ -267,6 +269,9 @@ function App() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/categories/details/:id" element={<CategoryDetails />} />
 
+            <Route path="/sitedata" element={<SiteData />} />
+
+
             <Route path="/bands" element={<Bands/>} />
             <Route path="/bands/details/:id" element={<BandDetails />} />
 
@@ -336,10 +341,11 @@ function App() {
               element={<NotificationDetails />}
             />
 
-            <Route path="banners" element={<Banners />} />
-            <Route path="/banner/details/:id" element={<BannerDetails />} />
+            <Route path="quickguide" element={<QuickGuides />} />
             <Route path="/pickupcharge" element={<ListPickupCharges />} />
             <Route path="/locations" element={<ListLocations />} />
+            <Route path="/setting" element={<Setting />} />
+
             <Route
               path="/pricing-parameters"
               element={<ListPricingParameters />}

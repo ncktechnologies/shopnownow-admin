@@ -7,18 +7,18 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch } from 'react-redux'
 import Messages from '../../ToastMessages/Messages'
 import { useEffect } from 'react'
-import { editBanner, getAllBanners } from '../../redux/bannerSlice'
+import { editQuickGuide, getAllQuickGuides } from '../../redux/quickGuideSlice'
 
 const initialFormState = {
   title: '',
-  banner: '',
-  description: '',
+  body: '',
+  image: '',
 }
 
-function UpdateBanner({ banner }) {
+function UpdateQuickGuide({ quickGuide }) {
   const [show, setShow] = useState(false)
   const [image, setImage] = useState('')
-  const [bannerFormData, setbannerFormData] = useState(initialFormState)
+  const [quickGuideFormData, setQuickGuideFormData] = useState(initialFormState)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
   const dispatch = useDispatch()
@@ -33,56 +33,56 @@ function UpdateBanner({ banner }) {
   const handleInputChange = (event) => {
     event.preventDefault()
     const { name, value } = event.target
-    setbannerFormData({
-      ...bannerFormData,
+    setQuickGuideFormData({
+      ...quickGuideFormData,
       [name]: value,
     })
   }
 
   useEffect(() => {
-    setbannerFormData({
-      title: banner.title,
-      banner: banner.banner,
-      description: banner.description,
+    setQuickGuideFormData({
+      title: quickGuide.title,
+      image: quickGuide.image,
+      body: quickGuide.body,
     })
-    console.log('banner', banner)
-  }, [banner])
+  }, [quickGuide])
 
   const clearFormData = () => {
-    setbannerFormData({
+    setQuickGuideFormData({
       title: '',
-      banner: '',
-      description: '',
+      body: '',
+      image: '',
     })
     setImage('')
   }
 
-  const handleEditBanner = (e) => {
+  const handleEditQuickGuide = (e) => {
     e.preventDefault()
-    var formData = new FormData()
-    formData.append('title', bannerFormData.title)
-    formData.append('banner', image)
-    formData.append('description', bannerFormData.description)
-    formData.append('banner_id', banner?.id)
+
+    const data = {
+      title: quickGuideFormData.title,
+      body: quickGuideFormData.body,
+      id: quickGuide.id
+    }
 
     setConfirmLoading(true)
-    dispatch(editBanner(formData))
+    dispatch(editQuickGuide(data))
       .then((response) => {
         setConfirmLoading(false)
-        if (response.type === 'banner/edit/fulfilled') {
-          dispatch(getAllBanners())
+        if (response.type === 'quickGuide/edit/fulfilled') {
+          dispatch(getAllQuickGuides())
           handleClose()
           //   clearFormData()
           console.log('response act', response)
-          Messages.successMessage('banner updated successfully', 'top-right')
-        } else if (response.type === 'banner/edit/rejected') {
+          Messages.successMessage('quickGuide updated successfully', 'top-right')
+        } else if (response.type === 'quickGuide/edit/rejected') {
           Messages.errorMessage(response?.payload?.message, 'top-right')
-          console.log('error notificatom', response?.payload?.message)
+          console.log('error notification', response?.payload?.message)
         }
       })
       .catch((error) => {
         setConfirmLoading(false)
-        console.log('error notificatom', 'Error updating banner, please try again')
+        console.log('error notificatom', 'Error updating quick Guide, please try again')
       })
   }
 
@@ -92,41 +92,45 @@ function UpdateBanner({ banner }) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Edit banner</Modal.Title>
+          <Modal.Title>Edit quick guide</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleEditBanner}>
+          <Form onSubmit={handleEditQuickGuide}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type='text'
                 name='title'
-                placeholder='Enter banner name'
-                defaultValue={bannerFormData.title}
+                placeholder='Enter QuickGuide title'
+                defaultValue={quickGuideFormData.title}
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
             <Form.Group className='mb-3' controlId='formBasicPassword'>
-              <Form.Label>Description </Form.Label>
+              <Form.Label>Body </Form.Label>
               <Form.Control
                 type='text'
-                name='description'
-                placeholder='description'
-                defaultValue={bannerFormData.description}
+                name='body'
+                placeholder='body'
+                defaultValue={quickGuideFormData.body}
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
-            <Form.Group className='mb-3' controlId='formBasicPassword'>
-              <Form.Label>banner (Optional)</Form.Label>
+            {/* <Form.Group className='mb-3' controlId='formBasicPassword'>
+              <Form.Label> Image</Form.Label>
               <Form.Control type='file' onChange={(evnt) => onChangeImage(evnt)} />
               <span>
-                <img src={banner?.banner} alt='horse' style={{ with: '70px', height: '70px' }} />
+                <img src={quickGuide?.image} alt='image' style={{ with: '70px', height: '70px' }} />
               </span>
-            </Form.Group>
+            </Form.Group> */}
 
-            <Button variant='primary' type='submit' disabled={confirmLoading ? true : false}>
+            <Button variant='primary' type='submit' disabled={confirmLoading ? true : false} style={{
+                background: "#ff0303",
+                color: "#fff",
+                border: "none",
+              }}>
               {confirmLoading ? 'Please wait...' : 'Submit'}
             </Button>
           </Form>
@@ -137,4 +141,4 @@ function UpdateBanner({ banner }) {
   )
 }
 
-export default UpdateBanner
+export default UpdateQuickGuide

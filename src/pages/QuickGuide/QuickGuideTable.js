@@ -1,13 +1,12 @@
-import { Avatar, Button, Table } from 'antd'
+import { Avatar, Button, Table, Switch} from 'antd'
 import moment from 'moment'
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateSubject from './UpdateBanner'
-import UpdateBanner from './UpdateBanner'
+import UpdateQuickGuide from './UpdateQuickGuide'
 
-const BannerTable = ({ data, loading, handleDelete }) => {
+const QuickGuideTable = ({ data, loading, hideShowQuickGuide }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -40,11 +39,11 @@ const BannerTable = ({ data, loading, handleDelete }) => {
       }),
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: 'Body',
+      dataIndex: 'body',
+      key: 'body',
       ...getColumnSearchProps({
-        dataIndex: 'description',
+        dataIndex: 'body',
         handleReset,
         searchInput,
         handleSearch,
@@ -53,15 +52,23 @@ const BannerTable = ({ data, loading, handleDelete }) => {
         setSearchText,
         searchedColumn,
       }),
+
+      render: (body) => (
+        <span style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          {body && body?.substring(0, 60)}{" "}
+          {body && body?.length >= 60 && "..."}
+        </span>
+      ),
     },
     {
-      title: 'Banner',
+      title: 'Image',
       key: 'id',
-      dataIndex: 'banner',
+      dataIndex: 'image_path',
       align: 'center',
-      render: (banner) => (
-        <Link to={`${banner}`}>
-          {banner ? (
+      render: (image_path) => (
+        <div>
+          {image_path ? (
             <img
               style={{
                 width: '60px',
@@ -69,7 +76,7 @@ const BannerTable = ({ data, loading, handleDelete }) => {
                 borderRadius: '50%',
                 objectFit: 'cover',
               }}
-              src={banner}
+              src={image_path}
               height={60}
               width={60}
               alt='avatar'
@@ -77,11 +84,11 @@ const BannerTable = ({ data, loading, handleDelete }) => {
           ) : (
             <Avatar style={{ backgroundColor: '#3f8bcaa1' }} icon={<UserOutlined />} size={50} />
           )}
-        </Link>
+        </div>
       ),
     },
     {
-      title: 'Craeted At',
+      title: 'Created At',
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps({
@@ -106,15 +113,14 @@ const BannerTable = ({ data, loading, handleDelete }) => {
       render: (singleData) => (
         <>
           <div>
-            <Button style={{ marginRight: '5px' }} title='View banner details'>
-              <Link to={`/banner/details/${singleData?.id}`}>{'View'}</Link>
+            <Button style={{ marginRight: '5px' }} title='Edit QuickGuide'>
+              <UpdateQuickGuide quickGuide={singleData} />
             </Button>
-            <Button style={{ marginRight: '5px' }} title='Edit banner'>
-              <UpdateBanner banner={singleData} />
-            </Button>
-            <Button danger onClick={() => handleDelete(singleData)} title='Permantly delete banner'>
-              delete
-            </Button>
+            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
+            
+              checked={singleData?.is_hidden === 0}
+              onChange={() => hideShowQuickGuide(singleData?.id)}
+            />
           </div>
         </>
       ),
@@ -135,4 +141,4 @@ const BannerTable = ({ data, loading, handleDelete }) => {
   )
 }
 
-export default BannerTable
+export default QuickGuideTable

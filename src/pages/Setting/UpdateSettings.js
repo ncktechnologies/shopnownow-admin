@@ -5,20 +5,19 @@ import Form from "react-bootstrap/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import Messages from "../../ToastMessages/Messages";
 import { useEffect } from "react";
 import { notification } from "antd";
-import { getAllLocations, editLocation } from "../../redux/locationSlice";
+import { getAllSettings, editSettings } from "../../redux/settingsSlice";
 
-import "./location.css";
 
 const initialFormState = {
-  name: "",
+  key: "",
+  value: ""
 };
 
-function UpdateHubLocation({ location }) {
+function UpdateSettings({ settings }) {
   const [show, setShow] = useState(false);
-  const [locationFormData, setlocationFormData] = useState(initialFormState);
+  const [settingsFormData, setsettingsFormData] = useState(initialFormState);
 
 
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -30,45 +29,47 @@ function UpdateHubLocation({ location }) {
   const handleInputChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    setlocationFormData({
-      ...locationFormData,
+    setsettingsFormData({
+      ...settingsFormData,
       [name]: value,
     });
   };
 
 
   useEffect(() => {
-    setlocationFormData({
-      name: location?.name || "",
+    setsettingsFormData({
+      key: settings?.key,
+      value: settings?.value
     });
-  }, [location?.name]);
+  }, [settings]);
 
   const clearFormData = () => {
-    setlocationFormData({
-      name: "",
-    });
+    setsettingsFormData({
+      key: "",
+      value: ""    });
   };
 
-  const handleEditlocation = (e) => {
+  const handleeditSettings = (e) => {
     e.preventDefault();
 
     var formData = new FormData();
 
 
-    formData.append("name", locationFormData.name);
+    formData.append("key", settingsFormData.key);
+    formData.append("value", settingsFormData.value);
 
     setConfirmLoading(true);
-    dispatch(editLocation(formData))
+    dispatch(editSettings(formData))
       .then((response) => {
         setConfirmLoading(false);
-        if (response.type === "location/edit/fulfilled") {
-          dispatch(getAllLocations());
+        if (response.type === "settings/edit/fulfilled") {
+          dispatch(getAllSettings());
           handleClose();
           clearFormData();
           notification.success({
-            message: "location updated successfully",
+            message: "settings updated successfully",
           });
-        } else if (response.type === "location/edit/rejected") {
+        } else if (response.type === "settings/edit/rejected") {
           notification.error({
             message: response?.error?.message,
           });
@@ -79,7 +80,7 @@ function UpdateHubLocation({ location }) {
         setConfirmLoading(false);
         console.log(
           "error notification",
-          "Error updating location, please try again"
+          "Error updating settings, please try again"
         );
       });
   };
@@ -90,17 +91,27 @@ function UpdateHubLocation({ location }) {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Edit Location</Modal.Title>
+          <Modal.Title>Edit settings</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleEditlocation}>
+          <Form onSubmit={handleeditSettings}>
 
                   <Form.Group className="mb-3" controlId="formBasicAddress">
-                    <Form.Label>Location</Form.Label>
+                    <Form.Label>Key</Form.Label>
                     <Form.Control
                       type="text"
-                      name="name"
-                      defaultValue={locationFormData?.name}
+                      name="key"
+                      defaultValue={settingsFormData?.key}
+                      onChange={(evt) => handleInputChange(evt)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3" controlId="formBasicAddress">
+                    <Form.Label>Value</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="value"
+                      defaultValue={settingsFormData?.value}
                       onChange={(evt) => handleInputChange(evt)}
                     />
                   </Form.Group>
@@ -121,4 +132,4 @@ function UpdateHubLocation({ location }) {
   );
 }
 
-export default UpdateHubLocation;
+export default UpdateSettings;
