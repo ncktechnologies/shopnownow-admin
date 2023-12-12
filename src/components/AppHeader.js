@@ -60,7 +60,7 @@ const AppHeader = () => {
         justifyContent: 'space-between',
       }}
     >
-      <h2>{adminName?.value?.admin?.name} (Super Admin)</h2>
+      <div className='hello'>Hello, {adminName?.value?.admin?.name}</div>
       <div>
 
       <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
