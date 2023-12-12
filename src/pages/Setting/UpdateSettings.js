@@ -12,7 +12,6 @@ import { getAllSettings, editSettings } from "../../redux/settingsSlice";
 
 const initialFormState = {
   key: "",
-  value: ""
 };
 
 function UpdateSettings({ settings }) {
@@ -38,25 +37,24 @@ function UpdateSettings({ settings }) {
 
   useEffect(() => {
     setsettingsFormData({
-      key: settings?.key,
-      value: settings?.value
+      value: settings?.value,
     });
   }, [settings]);
 
   const clearFormData = () => {
     setsettingsFormData({
       key: "",
-      value: ""    });
+         });
   };
 
   const handleeditSettings = (e) => {
     e.preventDefault();
 
-    var formData = new FormData();
+    var formData =  {
+      value: settingsFormData.value,
+      key: settings.key
+    };
 
-
-    formData.append("key", settingsFormData.key);
-    formData.append("value", settingsFormData.value);
 
     setConfirmLoading(true);
     dispatch(editSettings(formData))
@@ -96,15 +94,7 @@ function UpdateSettings({ settings }) {
         <Modal.Body>
           <Form onSubmit={handleeditSettings}>
 
-                  <Form.Group className="mb-3" controlId="formBasicAddress">
-                    <Form.Label>Key</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="key"
-                      defaultValue={settingsFormData?.key}
-                      onChange={(evt) => handleInputChange(evt)}
-                    />
-                  </Form.Group>
+            
 
                   <Form.Group className="mb-3" controlId="formBasicAddress">
                     <Form.Label>Value</Form.Label>
