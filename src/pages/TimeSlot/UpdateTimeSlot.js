@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
-import { createTimeSlot, getAllTimeSlots } from "../../redux/timeSlotSlice";
+import { editTimeSlot, getAllTimeSlots } from "../../redux/timeSlotSlice";
 import { notification, Avatar } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,7 +19,7 @@ const initialFormState = {
 
 };
 
-function CreateTimeSlot() {
+function UpdateTimeSlot({timeslot}) {
 
   const [selectedStartTime, setSelectedStartTime] = useState(null);
   const [selectedEndTime, setSelectedEndTime] = useState(null);
@@ -51,7 +51,17 @@ function CreateTimeSlot() {
     });
   };
 
-  const handlecreateTimeSlot = (e) => {
+
+  useEffect(() => {
+    setTimeSlotFormData({
+      type: timeslot.is_available === "yes" ? "1" : "0",
+      start_date: timeslot.start_date,
+      end_date: timeslot.end_date,
+   
+    })
+  }, [timeslot])
+
+  const handleEditTimeSlot = (e) => {
 
  
 
@@ -68,21 +78,22 @@ function CreateTimeSlot() {
         hour12: true,
       }),
       is_available: timeSlotFormData.is_available,
+      timeslot_id: timeslot.id
  
     };
 
     setConfirmLoading(true);
-    dispatch(createTimeSlot(formData))
+    dispatch(editTimeSlot(formData))
       .then((response) => {
         setConfirmLoading(false);
-        if (response.type === "timeSlot/create/fulfilled") {
+        if (response.type === "timeslot/edit/fulfilled") {
           dispatch(getAllTimeSlots());
           handleClose();
           clearFormData();
           notification.success({
-            message: "timeSlot created successfully",
+            message: "timeslot updated successfully",
           });
-        } else if (response.type === "timeSlot/create/rejected") {
+        } else if (response.type === "timeslot/edit/rejected") {
           notification.error({
             message: response?.payload?.message,
           });
@@ -92,21 +103,21 @@ function CreateTimeSlot() {
         setConfirmLoading(false);
         console.log(
           "error notification",
-          "Error creating time slot, please try again"
+          "Error updating time slot, please try again"
         );
       });
   };
 
   return (
     <>
-      <span onClick={handleShow}>Create Time slot</span>
+      <span onClick={handleShow}>Edit</span>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Create Time slot</Modal.Title>
+          <Modal.Title>Edit Time slot</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handlecreateTimeSlot}>
+          <Form onSubmit={handleEditTimeSlot}>
             
             <Row>
               <Col>
@@ -156,6 +167,8 @@ function CreateTimeSlot() {
                 }
                 aria-label="Default select example"
                 value={timeSlotFormData.discount_enabled}
+                defaultValue={timeslot?.is_available}
+
               >
                 <option>Select option to set availability</option>
 
@@ -185,4 +198,4 @@ function CreateTimeSlot() {
   );
 }
 
-export default CreateTimeSlot;
+export default UpdateTimeSlot;

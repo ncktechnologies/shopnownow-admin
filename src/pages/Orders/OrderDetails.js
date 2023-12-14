@@ -25,8 +25,6 @@ const OrderDetails = () => {
   const { singleData, loading } = useSelector((state) => state.orders);
   const dispatch = useDispatch();
 
-
-
   useEffect(() => {
     dispatch(getOneOrder(id));
   }, [id]);
@@ -81,7 +79,7 @@ const OrderDetails = () => {
         status: singleData.order.status || "pending",
       });
     }
-  }, [singleData]);
+  }, [singleData?.order?.id]);
 
   
 
@@ -195,7 +193,7 @@ const OrderDetails = () => {
                           name="status"
                           onChange={(evt) => handleInputChange(evt)}
                           aria-label="Default select example"
-                          defaultValue={statusData?.status}
+                          defaultValue={singleData?.order?.status}
                         >
                           <option value="pending">Pending</option>
                           <option value="picked">Picked</option>

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { createDeliveryLocation, getAllDeliveryLocations } from "../../redux/deliveryLocationSlice";
 import { notification, Avatar } from "antd";
 import { getAllBands } from "../../redux/bandSlice";
+import { getAllLocations } from "../../redux/locationSlice";
+
 import { Switch } from 'antd'
 
 
@@ -22,7 +24,7 @@ function CreateDeliveryLocation() {
   const [show, setShow] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const { band } = useSelector((state) => state);
+  const { band, location } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(getAllBands());
@@ -56,11 +58,29 @@ function CreateDeliveryLocation() {
     );
   });
 
+  const location_list =
+  location &&
+  location?.data?.map((location, key) => {
+    return (
+      <option value={location?.name} key={key}>
+        {location?.name}
+      </option>
+    );
+  });
+
   const handleBandChange = (event) => {
     const selectedValue = event.target.value;
     setDeliveryLocationFormData({
       ...deliveryLocationFormData,
       band_id: selectedValue,
+    });
+  };
+
+  const handleLocationChange = (event) => {
+    const selectedValue = event.target.value;
+    setDeliveryLocationFormData({
+      ...deliveryLocationFormData,
+      location: selectedValue,
     });
   };
 
@@ -123,14 +143,21 @@ function CreateDeliveryLocation() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreatedeliveryLocation}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                type="text"
-                name="location"
-                placeholder="Enter location"
-                onChange={(evt) => handleInputChange(evt)}
-              />
+          <Form.Group
+              controlId="exampleForm.ControlSelect1"
+              style={{ marginBottom: "10px" }}
+            >
+              <Form.Label>Select location</Form.Label>
+              <Form.Select
+                name="band_id" // Add the "name" attribute
+                aria-label="Default select example"
+                required
+                onChange={handleLocationChange}
+                value={deliveryLocationFormData.location}
+              >
+                <option>Select location</option>
+                {location_list}
+              </Form.Select>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">

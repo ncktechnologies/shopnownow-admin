@@ -101,7 +101,7 @@ const PaymentTable = ({ data, loading }) => {
     },
 
     {
-      title: 'created at',
+      title: 'Created at',
       dataIndex: 'created_at',
       key: 'created_at',
       ...getColumnSearchProps({

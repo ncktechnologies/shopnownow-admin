@@ -42,18 +42,21 @@ const CouponTable = ({ data, loading }) => {
       }),
     },
 
+
     {
       title: 'Value',
       dataIndex: 'value',
       key: 'value',
       render: (value) => (
         <span style={{ whiteSpace: 'nowrap' }}>
-          <NumericFormat
+          {/* <NumericFormat
             value={value}
             displayType={'text'}
             thousandSeparator={true}
             prefix={'₦'}
-          />
+          /> */}
+
+          {value}
         </span>
       ),
     },
@@ -140,7 +143,7 @@ const CouponTable = ({ data, loading }) => {
               <Link to={`/coupons/details/${singleData?.id}`}>{'View'}</Link>
             </Button>
 
-            <Button style={{ marginRight: '5px' }} title='Edit band'>
+            <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
               <UpdateCoupon coupon={singleData} />
             </Button>
     

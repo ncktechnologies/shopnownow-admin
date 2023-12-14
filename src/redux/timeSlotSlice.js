@@ -61,6 +61,16 @@ export const hideTimeSlot = createAsyncThunk(
     },
   )
 
+  export const editTimeSlot = createAsyncThunk('timeslot/edit', async (data, { rejectWithValue }) => {
+    try {
+      const response = await timeSlotService.editTimeSlot(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  })
+  
+
 
 
 
@@ -148,6 +158,19 @@ const slice = createSlice({
         state.loading = false
       },
       [hideTimeSlot.rejected]: (state, { payload }) => {
+        state.error = true
+        state.message = payload
+        state.loading = false
+      },
+
+      [editTimeSlot.pending]: (state) => {
+        state.loading = true
+      },
+      [editTimeSlot.fulfilled]: (state, { payload }) => {
+        state.message = payload?.message
+        state.loading = false
+      },
+      [editTimeSlot.rejected]: (state, { payload }) => {
         state.error = true
         state.message = payload
         state.loading = false

@@ -61,7 +61,7 @@ const AppSider = () => {
     getItem('Categories', 'categories', <BiCategory />),
     getItem('Users', 'users', <BiUserPlus size={20} />),
     getItem('Bands', 'bands', <BiBook size={20} />),
-    getItem('Coupons', 'coupons', <BarcodeOutlined size={20} />),
+    getItem('Discount Coupons', 'coupons', <BarcodeOutlined size={20} />),
 
 
     getItem('Products', 'products', <BiBox size={20} />),

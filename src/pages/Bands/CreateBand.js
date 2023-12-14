@@ -120,11 +120,11 @@ function CreateBand() {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label> Minimum </Form.Label>
+              <Form.Label> Minimum spend</Form.Label>
               <Form.Control
                 type="text"
                 name="minimum"
-                placeholder="Minimum"
+                placeholder="Minimum spend"
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>

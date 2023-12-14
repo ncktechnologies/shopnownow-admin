@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
+import UpdateTimeSlot from './UpdateTimeSlot'
 
 const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
   const [searchText, setSearchText] = useState('')
@@ -24,9 +25,9 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
 
   const columns = [
     {
-      title: 'Delivery time',
-      dataIndex: 'delivery_time',
-      key: 'delivery_time',
+      title: 'Start time',
+      dataIndex: 'start_time',
+      key: 'start_time',
       ...getColumnSearchProps({
         dataIndex: 'delivery_time',
         handleReset,
@@ -39,7 +40,21 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
       }),
     },
 
-  
+    {
+      title: 'End time',
+      dataIndex: 'end_time',
+      key: 'end_time',
+      ...getColumnSearchProps({
+        dataIndex: 'delivery_time',
+        handleReset,
+        searchInput,
+        handleSearch,
+        setSearchedColumn,
+        searchText,
+        setSearchText,
+        searchedColumn,
+      }),
+    },
 
     {
       title: 'Available',
@@ -89,6 +104,10 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
           <div>
           <Button style={{ marginRight: '5px' }} title='View category details'>
               <Link to={`/bands/details/${singleData?.id}`}>{'View'}</Link>
+            </Button>
+
+            <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
+              <UpdateTimeSlot timeslot={singleData} />
             </Button>
 
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}

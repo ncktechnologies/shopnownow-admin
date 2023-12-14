@@ -22,8 +22,6 @@ const ProductTable = ({ data, loading, handleDelete }) => {
     setSearchText('')
   }
 
-  console.log(data)
-
   const columns = [
   
     {
