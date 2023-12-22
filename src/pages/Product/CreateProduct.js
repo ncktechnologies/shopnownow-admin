@@ -24,8 +24,16 @@ function CreateProduct() {
   const [productFormData, setProductFormData] = useState(initialFormState);
 
   const { categories } = useSelector((state) => state);
-  const [allcategories, setCategories] = useState(categories?.data);
-
+  
+  const categories_list =
+  categories?.data &&
+  categories?.data?.map((category, key) => {
+    return (
+      <option value={category?.id} key={key}>
+        {category?.name}
+      </option>
+    );
+  });
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const dispatch = useDispatch();
@@ -39,15 +47,7 @@ function CreateProduct() {
 
 
 
-  const categories_list =
-    allcategories &&
-    allcategories?.map((category, key) => {
-      return (
-        <option value={category?.id} key={key}>
-          {category?.name}
-        </option>
-      );
-    });
+ 
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -142,7 +142,7 @@ function CreateProduct() {
               />
             </Form.Group>
 
-            <Form.Group
+            {categories?.data && (<Form.Group
               controlId="exampleForm.ControlSelect1"
               style={{ marginBottom: "10px" }}
             >
@@ -157,7 +157,7 @@ function CreateProduct() {
                <option>Select category</option>
                     {categories_list}
               </Form.Select>
-            </Form.Group>
+            </Form.Group>)}
 
             <Form.Group
               className="mb-3"
