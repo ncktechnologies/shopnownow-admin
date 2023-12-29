@@ -11,24 +11,34 @@ const getOne = async (data) => {
 }
 
 const createAdmin = async (data) => {
-  const response = await AuthAPI.post(`/admin/notification/send-email-notification`, data)
+  const response = await AuthAPI.post(`/admin/admin/create`, data)
   return response.data
 }
 
-const editAdmin = async (data) => {
-  const response = await AuthAPI.post(`/admin/notification/update`, data)
-  return response.data
-}
 
 const deleteOne = async (data) => {
   const response = await AuthAPI.delete(`/admin/delete-admin/${data}`)
   return response.data
 }
 
+const deactivateAdmin = async (data) => {
+  const response = await AuthAPI.post(`/admin/deactivate/${data}`)
+  return response.data
+}
+
+
+
+const activateAdmin = async (data) => {
+  const response = await AuthAPI.post(`/admin/activate/${data}`)
+  return response.data
+}
+
+
 export const adminService = {
   getAll,
   getOne,
   createAdmin,
-  editAdmin,
   deleteOne,
+  deactivateAdmin,
+  activateAdmin
 }

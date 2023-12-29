@@ -7,15 +7,14 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { notification } from 'antd'
-import { createPushNotification, getAllNotifications } from '../../redux/notificationSlice'
+import { sendToAllUsers, getAllNotifications } from '../../redux/notificationSlice'
 
 const initialFormState = {
-  message_title: '',
-  message_content: '',
-  user_type: '',
+  title: '',
+  body: '',
 }
 
-function CreatePushNotification() {
+function SendToAllUsers() {
   const [show, setShow] = useState(false)
   const [notificationFormData, setnotificationFormData] = useState(initialFormState)
 
@@ -41,37 +40,35 @@ function CreatePushNotification() {
 
   const clearFormData = () => {
     setnotificationFormData({
-      message_title: '',
-      message_content: '',
-      user_type: ''
+      title: '',
+      body: '',
     })
   }
 
-  const handlecreatePushNotification = (e) => {
+  const handleSendToAllUsers = (e) => {
     e.preventDefault()
 
     const data = {
-      message_title: notificationFormData.message_title,
-      message_content: notificationFormData.message_content,
-      user_type: notificationFormData.user_type,
-      
+      title: notificationFormData.title,
+      body: notificationFormData.body,
+
     }
 
     console.log(data)
 
     setConfirmLoading(true)
-    dispatch(createPushNotification(data))
+    dispatch(sendToAllUsers(data))
       .then((response) => {
+
         setConfirmLoading(false)
-        if (response.type === 'pushnotification/create/fulfilled') {
-          dispatch(getAllNotifications())
+        if (response.type === 'sendtoall/create/fulfilled') {
           handleClose()
           clearFormData()
           console.log('response act', response)
           notification.success({
-            message: 'push notification created successfully',
+            message: 'notification created successfully',
           })
-        } else if (response.type === 'pushnotification/create/rejected') {
+        } else if (response.type === 'sendtoall/create/rejected') {
           notification.error({
             message: response?.payload?.message,
           })
@@ -87,34 +84,20 @@ function CreatePushNotification() {
 
   return (
     <>
-      <span onClick={handleShow}>Send Push Notification</span>
+      <span onClick={handleShow}>Send notification to all users </span>
 
       <Modal show={show} onHide={handleClose} size='md'>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Send Push Notifications to Users</Modal.Title>
+          <Modal.Title>Send notification to all users </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handlecreatePushNotification}>
+          <Form onSubmit={handleSendToAllUsers}>
 
-          <Form.Group className='mb-3' controlId='formBasicUser'>
-          <Form.Label>User Type</Form.Label>
-          <Form.Select
-            name='user_type'
-            onChange={(evt) => handleInputChange(evt)}
-            aria-label='Default select example'
-            required
-            value={notificationFormData.user_type}
-          >
-            <option value=''>Select email receiver</option>
-            <option value='allCustomers'>Customers</option>
-            <option value='allRiders'>Riders</option>
-          </Form.Select>
-        </Form.Group>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type='text'
-                name='message_title'
+                name='title'
                 placeholder='Enter message title'
                 onChange={(evt) => handleInputChange(evt)}
               />
@@ -123,17 +106,16 @@ function CreatePushNotification() {
             <Form.Group className='mb-3' controlId='formBasicPassword'>
               <Form.Label>Message content </Form.Label>
               <Form.Control
-                // style={{ height: '100px' }}
                 as='textarea'
-                name='message_content'
+                name='body'
                 placeholder='Message content'
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
-         
+          
 
-            <Button variant='primary' type='submit' disabled={confirmLoading ? true : false}>
+            <Button variant='primary' style={{color: '#fff', backgroundColor:'#ff0303', border: 'none'}} type='submit' disabled={confirmLoading ? true : false}>
               {confirmLoading ? 'Please wait...' : 'Submit'}
             </Button>
           </Form>
@@ -144,4 +126,4 @@ function CreatePushNotification() {
   )
 }
 
-export default CreatePushNotification
+export default SendToAllUsers

@@ -10,13 +10,17 @@ const getOne = async (data) => {
   return response.data
 }
 
-const createEmailNotification = async (data) => {
-  const response = await AuthAPI.post(`/admin/notification/send-email-notification`, data)
+const sendToAllUsers = async (data) => {
+  const response = await AuthAPI.post(`/admin/app-notifications/send-to-all-users`, data)
   return response.data
 }
 
-const createPushNotification = async (data) => {
-  const response = await AuthAPI.post(`/admin/notification/send-bulk-push-notification`, data)
+const sendToOneUser = async (data) => {
+  const response = await AuthAPI.post(`/admin/app-notifications/send-to-user/${data.user_id}`, data)
+  return response.data
+}
+const sendToMultipleUsers = async (data) => {
+  const response = await AuthAPI.post(`/admin/app-notifications/send-to-users-by-id`, data)
   return response.data
 }
 
@@ -33,8 +37,9 @@ const deleteOne = async (data) => {
 export const notificationService = {
   getAll,
   getOne,
-  createEmailNotification,
-  createPushNotification,
+  sendToAllUsers,
+  sendToOneUser,
+  sendToMultipleUsers,
   editNotification,
   deleteOne,
 }

@@ -5,6 +5,11 @@ const getDashboardStats = async () => {
   return response
 }
 
+const getAnalytics = async () => {
+  const response = await AuthAPI.get(`/admin/dashboard/analytics`)
+  return response
+}
+
 const getOne = async (data) => {
   const response = await AuthAPI.get(`/admin/user/show/${data}`)
   return response.data
@@ -13,4 +18,5 @@ const getOne = async (data) => {
 export const dashboardService = {
   getDashboardStats,
   getOne,
+  getAnalytics
 }

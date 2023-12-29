@@ -37,11 +37,12 @@ export const createAdmin = createAsyncThunk(
   },
 )
 
-export const editAdmin = createAsyncThunk(
-  'notification/edit',
+
+export const deleteAdmin = createAsyncThunk(
+  'notification/delete',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await adminService.editAdmin(data)
+      const response = await adminService.deleteOne(data)
       return response.data
     } catch (error) {
       return rejectWithValue(error?.response?.data)
@@ -49,11 +50,23 @@ export const editAdmin = createAsyncThunk(
   },
 )
 
-export const deleteAdmin = createAsyncThunk(
-  'notification/delete',
+export const activateAdmin = createAsyncThunk(
+  'admin/activateAdmin',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await adminService.deleteOne(data)
+      const response = await adminService.activateAdmin(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  },
+)
+
+export const deactivateAdmin = createAsyncThunk(
+  'admin/deactivateAdmin',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await adminService.deactivateAdmin(data)
       return response.data
     } catch (error) {
       return rejectWithValue(error?.response?.data)
@@ -124,19 +137,6 @@ const slice = createSlice({
       state.loading = false
     },
 
-    [editAdmin.pending]: (state) => {
-      state.loading = true
-    },
-    [editAdmin.fulfilled]: (state, { payload }) => {
-      state.message = payload?.message
-      state.loading = false
-    },
-    [editAdmin.rejected]: (state, { payload }) => {
-      state.error = true
-      state.message = payload
-      state.loading = false
-    },
-
     [deleteAdmin.pending]: (state) => {
       state.loading = true
     },
@@ -145,6 +145,31 @@ const slice = createSlice({
       state.loading = false
     },
     [deleteAdmin.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+    [activateAdmin.pending]: (state) => {
+      state.loading = true
+    },
+    [activateAdmin.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+    },
+    [activateAdmin.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+
+    [deactivateAdmin.pending]: (state) => {
+      state.loading = true
+    },
+    [deactivateAdmin.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+    },
+    [deactivateAdmin.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false

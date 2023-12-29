@@ -5,6 +5,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toggleCollapseSider, toggleSiderHidden } from '../redux/appSlice'
 import { logout } from '../redux/authSlice'
 import { RiUserLine, RiUserHeartLine, RiSettings2Line } from 'react-icons/ri'
+import { BiUserPlus,} from 'react-icons/bi'
+import {
+  NotificationOutlined,
+} from '@ant-design/icons'
+
 
 
 const AppHeader = () => {
@@ -62,6 +67,16 @@ const AppHeader = () => {
     >
       <div className='hello'>Hello, {adminName?.value?.admin?.name}</div>
       <div>
+      <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
+        <Link to="notifications" style={{color: '#ff0303'}}>
+       Notifications <NotificationOutlined />
+        </Link>
+      </Button>
+      <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
+        <Link to="admins" style={{color: '#ff0303'}}>
+       Admins <BiUserPlus size={16} />
+        </Link>
+      </Button>
 
       <Button style={{color: '#ff0303', backgroundColor:'#fff', marginRight: '10px', border: '1px solid #ff0303'}}>
         <Link to="setting" style={{color: '#ff0303'}}>

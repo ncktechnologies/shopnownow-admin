@@ -25,11 +25,11 @@ export const getOneNotification = createAsyncThunk(
   },
 )
 
-export const createEmailNotification = createAsyncThunk(
-  'emailnotification/create',
+export const sendToAllUsers = createAsyncThunk(
+  'sendtoall/create',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await notificationService.createEmailNotification(data)
+      const response = await notificationService.sendToAllUsers(data)
       return response.data
     } catch (error) {
       return rejectWithValue(error?.response?.data)
@@ -37,17 +37,28 @@ export const createEmailNotification = createAsyncThunk(
   },
 )
 
-export const createPushNotification = createAsyncThunk(
-  'pushnotification/create',
+export const sendToOneUser = createAsyncThunk(
+  'sendtoone/create',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await notificationService.createPushNotification(data)
+      const response = await notificationService.sendToOneUser(data)
       return response.data
     } catch (error) {
       return rejectWithValue(error?.response?.data)
     }
   },
 )
+export const sendToMultipleUsers = createAsyncThunk(
+    'sendtomultiple/create',
+    async (data, { rejectWithValue }) => {
+      try {
+        const response = await notificationService.sendToMultipleUsers(data)
+        return response.data
+      } catch (error) {
+        return rejectWithValue(error?.response?.data)
+      }
+    },
+  )
 
 export const editNotification = createAsyncThunk(
   'notification/edit',
@@ -123,31 +134,44 @@ const slice = createSlice({
       state.loading = false
     },
 
-    [createEmailNotification.pending]: (state) => {
+    [sendToAllUsers.pending]: (state) => {
       state.loading = true
     },
-    [createEmailNotification.fulfilled]: (state, { payload }) => {
+    [sendToAllUsers.fulfilled]: (state, { payload }) => {
       state.message = payload?.message
       state.loading = false
     },
-    [createEmailNotification.rejected]: (state, { payload }) => {
+    [sendToAllUsers.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false
     },
 
-    [createPushNotification.pending]: (state) => {
+    [sendToOneUser.pending]: (state) => {
       state.loading = true
     },
-    [createPushNotification.fulfilled]: (state, { payload }) => {
+    [sendToOneUser.fulfilled]: (state, { payload }) => {
       state.message = payload?.message
       state.loading = false
     },
-    [createPushNotification.rejected]: (state, { payload }) => {
+    [sendToOneUser.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false
     },
+
+    [sendToMultipleUsers.pending]: (state) => {
+        state.loading = true
+      },
+      [sendToMultipleUsers.fulfilled]: (state, { payload }) => {
+        state.message = payload?.message
+        state.loading = false
+      },
+      [sendToMultipleUsers.rejected]: (state, { payload }) => {
+        state.error = true
+        state.message = payload
+        state.loading = false
+      },
 
     [editNotification.pending]: (state) => {
       state.loading = true

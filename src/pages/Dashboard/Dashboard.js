@@ -7,18 +7,22 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PageHeader } from "antd";
 import styled from "styled-components";
-import UserTable from "../Users/UserTable";
-import { getAllUsers } from "../../redux/userSlice";
+import { NumericFormat } from 'react-number-format'
+import TopSellingTable from "./TopSellingTable";
+import TopSellingLocationTable from "./TopSellingLocationTable";
+import TotalSalesTable from "./TotalSalesTable";
+
 
 const Dashboard = () => {
-  const { users } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const [dashboardStats, setdashboardStats] = useState();
+  const [analytics, setAnalytics] = useState();
+
   useEffect(() => {
-    dispatch(getAllUsers());
     getStatistics();
+    getAnalytics()
   }, []);
 
 
@@ -29,11 +33,21 @@ const Dashboard = () => {
         setdashboardStats(res?.data);
       })
       .catch((error) => {
-        console.log("DB error", error);
       });
   };
 
-  console.log("DB res", dashboardStats);
+  const getAnalytics = () => {
+    dashboardService
+      .getAnalytics()
+      .then((res) => {
+        setAnalytics(res?.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  console.log("analytics", analytics);
 
 
   return (
@@ -127,10 +141,152 @@ const Dashboard = () => {
           </Card>
         </CardGroup>
       </StyledContainer>
-      <PageHeader extra={[]} title="Users" />
-      {users?.data?.users && (
-        <UserTable data={users?.data?.users} loading={users?.loading} />
-      )}{" "}
+      <PageHeader extra={[]} title="Analytics" />
+      <StyledContainer>
+        <CardGroup className="card-group">
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue today
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_today}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue this week
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_this_week}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue this month
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_this_month}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue over the last 30 days
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_last_30_days}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+        </CardGroup>
+        <CardGroup className="card-group">
+        <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue over the last 90 days
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_last_90_days}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue (all time)
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_all_time}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Total revenue (this year)
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.total_revenue_this_year}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <div style={{ color: "#FF0303" }}>
+                  Average order value
+                </div>
+              </Card.Title>
+              <Card.Text> <NumericFormat
+            value={analytics?.average_order_value}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          /></Card.Text>
+            </Card.Body>
+          </Card>
+        </CardGroup>
+
+        <PageHeader extra={[]} title="Top selling products" />
+
+        <TopSellingTable
+        data={analytics?.top_selling_products}
+      />
+
+<PageHeader extra={[]} title="Top selling locations" />
+
+<TopSellingLocationTable
+data={analytics?.top_selling_locations}
+/>
+
+
+<PageHeader extra={[]} title="Total sales per product" />
+
+<TotalSalesTable
+data={analytics?.total_sales_per_product}
+/>
+      </StyledContainer>
     </div>
   );
 };
