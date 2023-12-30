@@ -8,7 +8,7 @@ import UpdateCoupon from './UpdateCoupon'
 import { NumericFormat } from 'react-number-format'
 
 
-const CouponTable = ({ data, loading }) => {
+const CouponTable = ({ data, loading, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -143,11 +143,19 @@ const CouponTable = ({ data, loading }) => {
               <Link to={`/coupons/details/${singleData?.id}`}>{'View'}</Link>
             </Button>
 
+
+
             <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
               <UpdateCoupon coupon={singleData} />
             </Button>
     
-
+<Button style={{ marginRight: '5px' }}
+            danger
+            onClick={() => handleDelete(singleData)}
+            title='delete coupon'
+          >
+            delete
+          </Button>
           
           </div>
         </>

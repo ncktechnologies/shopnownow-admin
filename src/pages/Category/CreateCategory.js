@@ -19,6 +19,7 @@ function CreateCategory() {
     discount_value: "",
     thumbnail: "",
     band_id: "",
+    order: ""
   };
 
   const [show, setShow] = useState(false);
@@ -103,6 +104,7 @@ function CreateCategory() {
       discount_value: "",
       thumbnail: "",
       band_id: "",
+      order: ""
     });
   };
 
@@ -120,6 +122,8 @@ function CreateCategory() {
     formData.append("discount_value", categoryFormData.discount_value);
     formData.append("thumbnail", image);
     formData.append("band_id", categoryFormData.band_id);
+    formData.append("order", categoryFormData.order);
+
 
     setConfirmLoading(true);
     dispatch(createCategory(formData))
@@ -258,6 +262,16 @@ function CreateCategory() {
                 type="text"
                 name="discount_value"
                 placeholder="Discount value"
+                onChange={(evt) => handleInputChange(evt)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Order </Form.Label>
+              <Form.Control
+                type="text"
+                name="order"
+                placeholder="Order"
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>

@@ -23,11 +23,11 @@ const AdminTable = ({ data, loading, handleDelete }) => {
 
   const columns = [
     {
-      title: 'Full Name',
-      dataIndex: 'full_name',
-      key: 'full_name',
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       ...getColumnSearchProps({
-        dataIndex: 'full_name',
+        dataIndex: 'name',
         handleReset,
         searchInput,
         handleSearch,
@@ -40,11 +40,11 @@ const AdminTable = ({ data, loading, handleDelete }) => {
   
 
     {
-      title: 'Phone Number',
-      dataIndex: 'phone_number',
-      key: 'phone_number',
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       ...getColumnSearchProps({
-        dataIndex: 'phone_number',
+        dataIndex: 'email',
         handleReset,
         searchInput,
         handleSearch,
@@ -53,33 +53,6 @@ const AdminTable = ({ data, loading, handleDelete }) => {
         setSearchText,
         searchedColumn,
       }),
-    },
-
-    {
-      title: 'Profile picture',
-      key: 'id',
-      dataIndex: 'profile_picture',
-      align: 'center',
-      render: (profile_picture) => (
-        <Link to={`${profile_picture}`}>
-          {profile_picture ? (
-            <img
-              style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-              }}
-              src={profile_picture}
-              height={60}
-              width={60}
-              alt='avatar'
-            />
-          ) : (
-            <Avatar style={{ backgroundColor: '#3f8bcaa1' }} icon={<UserOutlined />} size={50} />
-          )}
-        </Link>
-      ),
     },
 
     {

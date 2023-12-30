@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllUsers } from "../../redux/userSlice";
 import UserTable from "./UserTable";
+import DownloadCSVButton from '../../components/DownloadCSVButton'
+
 
 const ListUsers = () => {
   const { users } = useSelector((state) => state);
@@ -17,9 +19,12 @@ const ListUsers = () => {
 
   console.log("users", users);
 
+  const keysToExport = ['name', 'email', 'phone_number', 'created_at'];
+  const dateSliceLength = 10; // Define the length to which you want to slice the date
+
   return (
     <div>
-      <PageHeader extra={[]} title="Users" />
+      <PageHeader extra={[<DownloadCSVButton data={users?.data?.users} keys={keysToExport} dateSliceLength={dateSliceLength} filename="users_data" />]}title="Users" />
       {users?.data?.users && (
         <UserTable data={users?.data?.users} loading={users?.loading} />
       )}{" "}

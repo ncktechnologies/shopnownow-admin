@@ -69,6 +69,18 @@ export const hideTimeSlot = createAsyncThunk(
       return rejectWithValue(error?.response?.data)
     }
   })
+
+  export const deleteTimeSlot = createAsyncThunk(
+    'timeSlot/delete',
+    async (data, { rejectWithValue }) => {
+      try {
+        const response = await timeSlotService.deleteOne(data)
+        return response.data
+      } catch (error) {
+        return rejectWithValue(error?.response?.data)
+      }
+    },
+  )
   
 
 
@@ -132,6 +144,19 @@ const slice = createSlice({
       state.loading = false
     },
     [createTimeSlot.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+    [deleteTimeSlot.pending]: (state) => {
+      state.loading = true
+    },
+    [deleteTimeSlot.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+      state.singleData = payload
+    },
+    [deleteTimeSlot.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false

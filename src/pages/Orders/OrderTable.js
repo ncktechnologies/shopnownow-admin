@@ -172,13 +172,12 @@ const OrderTable = ({ data, loading, handleDelete }) => {
             <Button
             danger
             onClick={() => handleDelete(singleData)}
-            title='delete product'
+            title='delete order'
           >
             delete
           </Button>
           </div>
-
-       
+     
         </>
       ),
     },

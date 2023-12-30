@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, notification, PageHeader } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getAllTimeSlots, showTimeSlot, hideTimeSlot } from '../../redux/timeSlotSlice'
+import { getAllTimeSlots, showTimeSlot, hideTimeSlot, deleteTimeSlot } from '../../redux/timeSlotSlice'
 import CreateTimeSlot from './CreateTimeSlot'
 import TimeSlotTable from './TimeSlotTable'
 
@@ -76,6 +76,37 @@ const TimeSlots = () => {
         
         
           };
+
+          const handleDeleteTimeSlot = ({ id }) => {
+
+            if (
+              !window.confirm("Do You want to permanently delete the selected timeslot?")
+            ) {
+              return;
+            }
+        
+            dispatch(deleteTimeSlot(id))
+              .then((response) => {
+                if (response.type === "timeSlot/delete/fulfilled") {
+                  dispatch(getAllTimeSlots());
+                  notification.success({
+                    message: " time slot deleted successfully",
+                  });
+                } else if (response.type === "timeSlot/delete/rejected") {
+                  notification.error({
+                    message:
+                      response?.payload?.message ||
+                      "Error deleting time slot, please try again",
+                  });
+                }
+              })
+              .catch((error) => {
+                notification.error({
+                  message: "Error deleting time slot, please try again later",
+                });
+              });
+          };
+
   return (
     <div>
       <PageHeader
@@ -92,6 +123,7 @@ const TimeSlots = () => {
         loading={timeslot.loading}
         showTimeSlot={handleShowTimeSlot}
         hideTimeSlot={handleHideTimeSlot}
+        handleDelete={handleDeleteTimeSlot}
       />)}
 
       

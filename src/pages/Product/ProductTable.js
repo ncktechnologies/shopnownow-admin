@@ -1,15 +1,45 @@
 import { Avatar, Button, Table } from 'antd'
 import moment from 'moment'
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
+import EditProduct from './EditProduct'
+import { FilterOutlined } from '@ant-design/icons';
+
 
 const ProductTable = ({ data, loading, handleDelete }) => {
+
+
+
+
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [filteredData, setFilteredData] = useState(null); // New state for filtered data
+  const [shouldRenderTable, setShouldRenderTable] = useState(false); // Flag to trigger re-render
+
+
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
 
+
+  const handlePriceFilter = () => {
+    // Filter the data based on minPrice and maxPrice
+    const filteredResults = data.data.filter(item => {
+      const price = parseFloat(item.price);
+      return (isNaN(price) || (price >= parseFloat(minPrice) && price <= parseFloat(maxPrice)));
+    });
+
+    setFilteredData(filteredResults);
+    setShouldRenderTable(true);
+  };
+
+  useEffect(() => {
+    if (shouldRenderTable) {
+      setShouldRenderTable(false);
+    }
+  }, [minPrice, maxPrice]);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm()
@@ -22,7 +52,6 @@ const ProductTable = ({ data, loading, handleDelete }) => {
     setSearchText('')
   }
 
-  console.log(data)
 
   const columns = [
   
@@ -78,7 +107,34 @@ const ProductTable = ({ data, loading, handleDelete }) => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      render: (price) => `₦${Number(price).toLocaleString()}` || 'Null',
+      filterIcon: <FilterOutlined />, // Replace with your custom filter icon
+      filterDropdown: ({ confirm }) => (
+        <div style={{ padding: 8 }}>
+          {/* Your custom filter components for minimum and maximum price */}
+          <input
+            placeholder="Min Price"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <input
+            placeholder="Max Price"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <Button
+            type="primary"
+            style={{color: "#fff", backgroundColor: "#ff0303", border: 'none'}}
+            onClick={() => {
+              handlePriceFilter();
+              confirm();
+            }}
+          >
+            Filter
+          </Button>
+        </div>
+      ),
     },
 
     {
@@ -126,28 +182,19 @@ const ProductTable = ({ data, loading, handleDelete }) => {
       ),
     },
     
-    // {
-    //   title: 'Actions',
-    //   key: 'id',
-    //   align: 'center',
-    //   render: (singleData) => (
-    //     <>
-    //       <Button style={{ marginRight: '5px' }} title='View product details'>
-    //         <Link to={`/product/details/${singleData?.id}/${singleData?.sku}`}>{'View'}</Link>
-    //       </Button>
-    //       <Button style={{ marginRight: '5px' }} title='Edit product'>
-    //         <Link to={`/product/edit/${singleData?.id}/${singleData?.sku}`}>Edit</Link>
-    //       </Button>
-    //       <Button
-    //         danger
-    //         onClick={() => handleDelete(singleData)}
-    //         title='Temporarily delete product'
-    //       >
-    //         delete
-    //       </Button>
-    //     </>
-    //   ),
-    // },
+    {
+      title: 'Actions',
+      key: 'id',
+      align: 'center',
+      render: (singleData) => (
+        <>
+          <Button style={{ marginRight: '5px' }} title='Edit product'>
+            <EditProduct data={singleData}/>
+          </Button>
+  
+        </>
+      ),
+    },
   ]
 
   return (
@@ -156,7 +203,7 @@ const ProductTable = ({ data, loading, handleDelete }) => {
         columns={columns}
         loading={loading}
         pagination={data.length > 10 ? true : false}
-        dataSource={data?.data}
+        dataSource={shouldRenderTable ? filteredData : data?.data}
         rowKey='id'
         scroll={{ x: 'max-content' }}
       /> 

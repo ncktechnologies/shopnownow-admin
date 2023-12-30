@@ -20,6 +20,11 @@ const editCoupon = async (data) => {
   return response.data
 }
 
+const deleteOne = async (data) => {
+  const response = await AuthAPI.delete(`/admin/coupons/delete/${data}`);
+  return response.data;
+};
+
 
 
 
@@ -28,6 +33,6 @@ export const couponService = {
   getAll,
   getOne,
   createCoupon,
-  editCoupon,
+  editCoupon,deleteOne
 
 }

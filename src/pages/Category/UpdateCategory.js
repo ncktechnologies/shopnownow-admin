@@ -21,6 +21,7 @@ const initialFormState = {
   discount_value: "",
   thumbnail: "",
   band_id: "",
+  order: ""
 }
 
 function UpdateCategory({ category }) {
@@ -108,9 +109,9 @@ function UpdateCategory({ category }) {
       thumbnail: category.thumbnail,
 
       band_id: category.band_id,
+      order: category.order
 
     })
-    console.log('category', category)
   }, [category])
 
   const clearFormData = () => {
@@ -123,6 +124,7 @@ function UpdateCategory({ category }) {
       discount_value: "",
       thumbnail: "",
       band_id: "",
+      order: ""
     })
   }
 
@@ -140,6 +142,8 @@ function UpdateCategory({ category }) {
     formData.append("discount_value", categoryFormData.discount_value);
     formData.append("thumbnail", image);
     formData.append("band_id", categoryFormData.band_id);
+    formData.append("order", categoryFormData.order);
+
     formData.append("id", category.id);
 
 
@@ -291,6 +295,18 @@ function UpdateCategory({ category }) {
                 onChange={(evt) => handleInputChange(evt)}
                 defaultValue={categoryFormData.discount_value}
 
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Order </Form.Label>
+              <Form.Control
+                type="text"
+                name="order"
+                placeholder="Order"
+                defaultValue={categoryFormData.order}
+
+                onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 

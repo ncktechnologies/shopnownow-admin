@@ -58,7 +58,7 @@ const ListPickupCharges = () => {
         title='Admins'
       />
       <AdminTable
-        data={admin?.data}
+        data={admin?.data?.admins}
         loading={admin.loading}
         handleDelete={handleDelete}
       />

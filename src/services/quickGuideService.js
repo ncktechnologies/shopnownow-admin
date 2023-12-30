@@ -10,6 +10,11 @@ const getOne = async (data) => {
   return response.data
 }
 
+const deleteOne = async (data) => {
+  const response = await AuthAPI.delete(`/admin/quickguide/delete/${data}`);
+  return response.data;
+};
+
 const createQuickGuide = async (data) => {
   const response = await AuthAPI.post(`/admin/quickguide/create`, data)
   return response.data
@@ -27,6 +32,7 @@ const hideShowQuickGuide = async (data) => {
 export const quickGuideService = {
   getAll,
   getOne,
+  deleteOne,
   createQuickGuide,
   editQuickGuide,
   hideShowQuickGuide,

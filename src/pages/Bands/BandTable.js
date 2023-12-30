@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateBand from './UpdateBand'
+import { NumericFormat } from 'react-number-format'
 
 const BandTable = ({ data, loading }) => {
   const [searchText, setSearchText] = useState('')
@@ -86,6 +87,22 @@ const BandTable = ({ data, loading }) => {
         setSearchText,
         searchedColumn,
       }),
+    },
+
+    {
+      title: 'Free delivery threshold',
+      dataIndex: 'free_delivery_threshold',
+      key: 'free_delivery_threshold',
+      render: (free_delivery_threshold) => (
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <NumericFormat
+            value={free_delivery_threshold}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          />
+        </span>
+      ),
     },
 
     {

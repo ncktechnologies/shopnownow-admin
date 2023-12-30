@@ -17,7 +17,7 @@ const Bands = () => {
     dispatch(getAllBands())
   }, [])
 
-
+console.log(band)
 
 
   return (

@@ -6,7 +6,7 @@ export const getAllAdmin = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await adminService.getAll()
-      return response.data
+      return response
     } catch (error) {
       return rejectWithValue(error?.response?.data)
     }

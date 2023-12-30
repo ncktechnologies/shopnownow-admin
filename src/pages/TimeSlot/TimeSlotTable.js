@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateTimeSlot from './UpdateTimeSlot'
 
-const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
+const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -109,6 +109,14 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot }) => {
             <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
               <UpdateTimeSlot timeslot={singleData} />
             </Button>
+
+            <Button style={{ marginRight: '5px' }}
+            danger
+            onClick={() => handleDelete(singleData)}
+            title='delete time slot'
+          >
+            delete
+          </Button>
 
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
             

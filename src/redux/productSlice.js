@@ -48,6 +48,18 @@ export const createProduct = createAsyncThunk(
   },
 )
 
+export const filterProduct = createAsyncThunk(
+  'product/filter',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await productService.filter(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  },
+)
+
 export const editProduct = createAsyncThunk('product/edit', async (data, { rejectWithValue }) => {
   try {
     const response = await productService.edit(data)
@@ -139,6 +151,18 @@ const slice = createSlice({
       state.loading = false
     },
     [createProduct.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+    [filterProduct.pending]: (state) => {
+      state.loading = true
+    },
+    [filterProduct.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+    },
+    [filterProduct.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false

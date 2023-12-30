@@ -24,6 +24,10 @@ function CreateProduct() {
   const [productFormData, setProductFormData] = useState(initialFormState);
 
   const { categories } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getAllCategories())
+  }, [])
   
   const categories_list =
   categories?.data &&
@@ -197,7 +201,7 @@ function CreateProduct() {
             </Form.Group>
 
             <Button
-              style={{ marginTop: "10px" }}
+              style={{ marginTop: '10px', color: "#fff", backgroundColor: "#ff0303", border: 'none' }}
               variant="primary"
               type="submit"
               disabled={confirmLoading ? true : false}

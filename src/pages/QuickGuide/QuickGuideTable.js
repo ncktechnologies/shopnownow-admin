@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateQuickGuide from './UpdateQuickGuide'
 
-const QuickGuideTable = ({ data, loading, hideShowQuickGuide }) => {
+const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -116,6 +116,13 @@ const QuickGuideTable = ({ data, loading, hideShowQuickGuide }) => {
             <Button style={{ marginRight: '5px' }} title='Edit QuickGuide'>
               <UpdateQuickGuide quickGuide={singleData} />
             </Button>
+            <Button style={{ marginRight: '5px' }}
+            danger
+            onClick={() => handleDelete(singleData)}
+            title='delete quick guide'
+          >
+            delete
+          </Button>
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
             
               checked={singleData?.is_hidden === 0}

@@ -21,10 +21,17 @@ const create = async (data) => {
   return response.data;
 };
 
-const edit = async (data) => {
-  const response = await AuthAPI.post(`/admin/product/update`, data);
+const filter = async (data) => {
+  const response = await AuthAPI.post(`/admin/product/filter`, data);
   return response.data;
 };
+
+const edit = async (formData) => {
+  const response = await AuthAPI.post(`/admin/product/update/${formData.get('product_id')}`, formData);
+  return response.data;
+};
+
+
 
 const deleteOne = async (data) => {
   const response = await AuthAPI.delete(`/admin/product/delete/${data}`);
@@ -44,6 +51,7 @@ export const productService = {
   getOne,
   create,
   edit,
+  filter,
   deleteOne,
   addRelatedProduct,
   getTopRatedProduct

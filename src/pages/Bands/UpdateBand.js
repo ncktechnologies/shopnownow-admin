@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { editBand, getAllBands } from '../../redux/bandSlice'
-import { notification } from 'antd'
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { editBand, getAllBands } from "../../redux/bandSlice";
+import { notification } from "antd";
 
 const initialFormState = {
   name: "",
@@ -15,30 +15,29 @@ const initialFormState = {
   minimum: "",
   discount_enabled: "",
   bulk_discount_amount: "",
-  bulk_discount_percentage:"",
-  general_discount: ""
-}
+  bulk_discount_percentage: "",
+  general_discount: "",
+  free_delivery_threshold: "",
+};
 
 function UpdateBand({ band }) {
-  const [show, setShow] = useState(false)
-  const [bandFormData, setbandFormData] = useState(initialFormState)
+  const [show, setShow] = useState(false);
+  const [bandFormData, setbandFormData] = useState(initialFormState);
 
-  const [confirmLoading, setConfirmLoading] = useState(false)
-  const dispatch = useDispatch()
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleInputChange = (event) => {
-    event.preventDefault()
-    const { name, value } = event.target
+    event.preventDefault();
+    const { name, value } = event.target;
     setbandFormData({
       ...bandFormData,
       [name]: value,
-    })
-  }
-
+    });
+  };
 
   useEffect(() => {
     setbandFormData({
@@ -48,9 +47,10 @@ function UpdateBand({ band }) {
       discount_enabled: band.discount_enabled,
       bulk_discount_amount: band.bulk_discount_amount,
       bulk_discount_percentage: band.bulk_discount_percentage,
-      general_discount: band.general_discount
-    })
-  }, [band])
+      general_discount: band.general_discount,
+      free_delivery_threshold: band.free_delivery_threshold,
+    });
+  }, [band]);
 
   const clearFormData = () => {
     setbandFormData({
@@ -59,48 +59,55 @@ function UpdateBand({ band }) {
       minimum: "",
       discount_enabled: "",
       bulk_discount_amount: "",
-      bulk_discount_percentage:"",
-      general_discount: ""
-    })
-  }
+      bulk_discount_percentage: "",
+      general_discount: "",
+      free_delivery_threshold: "",
+    });
+  };
 
   const handleEditCategory = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const data = {
       name: bandFormData.name,
       description: bandFormData.description,
       minimum: bandFormData.minimum,
-      discount_enabled: bandFormData.discount_enabled === "" ? bandFormData.discount_enabled : "0" ,
+      discount_enabled:
+        bandFormData.discount_enabled === ""
+          ? bandFormData.discount_enabled
+          : "0",
       bulk_discount_amount: bandFormData.bulk_discount_amount,
       bulk_discount_percentage: bandFormData.bulk_discount_percentage,
       general_discount: bandFormData.general_discount,
+      free_delivery_threshold: bandFormData.free_delivery_threshold,
       band_id: band?.id,
     };
 
-
-    setConfirmLoading(true)
+    setConfirmLoading(true);
     dispatch(editBand(data))
       .then((response) => {
-        setConfirmLoading(false)
-        if (response.type === 'band/edit/fulfilled') {
-          dispatch(getAllBands())
-          handleClose()
+        setConfirmLoading(false);
+        if (response.type === "band/edit/fulfilled") {
+          dispatch(getAllBands());
+          handleClose();
           //   clearFormData()
           notification.success({
-            message: 'band updated successfully',
-          })
-        } else if (response.type === 'band/edit/rejected') {
+            message: "band updated successfully",
+          });
+        } else if (response.type === "band/edit/rejected") {
           notification.error({
             message: response?.payload?.message,
-          })
-          console.log('error notification', response?.payload?.message)
+          });
+          console.log("error notification", response?.payload?.message);
         }
       })
       .catch((error) => {
-        setConfirmLoading(false)
-        console.log('error notification', 'Error updating band, please try again')
-      })
-  }
+        setConfirmLoading(false);
+        console.log(
+          "error notification",
+          "Error updating band, please try again"
+        );
+      });
+  };
 
   return (
     <>
@@ -111,7 +118,7 @@ function UpdateBand({ band }) {
           <Modal.Title>Edit band</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form onSubmit={handleEditCategory}>
+          <Form onSubmit={handleEditCategory}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -130,12 +137,9 @@ function UpdateBand({ band }) {
                 name="description"
                 placeholder="Description"
                 defaultValue={bandFormData.description}
-
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-         
-          
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label> Minimum </Form.Label>
@@ -144,7 +148,6 @@ function UpdateBand({ band }) {
                 name="minimum"
                 placeholder="Minimum"
                 defaultValue={bandFormData.minimum}
-
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
@@ -155,7 +158,6 @@ function UpdateBand({ band }) {
                 name="bulk_discount_amount"
                 placeholder="Bulk discount amount"
                 defaultValue={bandFormData.bulk_discount_amount}
-
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
@@ -166,7 +168,6 @@ function UpdateBand({ band }) {
                 name="bulk_discount_percentage"
                 placeholder="Bulk discount percentage"
                 defaultValue={bandFormData.bulk_discount_percentage}
-
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
@@ -177,7 +178,6 @@ function UpdateBand({ band }) {
                 name="general_discount"
                 placeholder="General discount"
                 defaultValue={bandFormData.general_discount}
-
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
@@ -188,22 +188,39 @@ function UpdateBand({ band }) {
             >
               <Form.Label>Discount Enabled</Form.Label>
               <Form.Select
-  name="discount_enabled"
-  onChange={(evt) => setbandFormData({
-    ...bandFormData,
-    discount_enabled: evt.target.value,
-  })}
-  aria-label="Default select example"
-  value={bandFormData.discount_enabled}
->
-  <option value="1">Yes</option>
-  <option value="0">No</option>
-</Form.Select>
-
+                name="discount_enabled"
+                onChange={(evt) =>
+                  setbandFormData({
+                    ...bandFormData,
+                    discount_enabled: evt.target.value,
+                  })
+                }
+                aria-label="Default select example"
+                value={bandFormData.discount_enabled}
+              >
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </Form.Select>
             </Form.Group>
-          
 
-            <Button style={{marginTop: '10px', background: '#ff0303', color: '#fff', border: 'none'}}
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Free delivery threshold</Form.Label>
+              <Form.Control
+                type="text"
+                name="free_delivery_threshold"
+                placeholder="Free delivery threshold"
+                onChange={(evt) => handleInputChange(evt)}
+                defaultValue={bandFormData.free_delivery_threshold}
+              />
+            </Form.Group>
+
+            <Button
+              style={{
+                marginTop: "10px",
+                background: "#ff0303",
+                color: "#fff",
+                border: "none",
+              }}
               variant="primary"
               type="submit"
               disabled={confirmLoading ? true : false}
@@ -215,7 +232,7 @@ function UpdateBand({ band }) {
       </Modal>
       <ToastContainer />
     </>
-  )
+  );
 }
 
-export default UpdateBand
+export default UpdateBand;

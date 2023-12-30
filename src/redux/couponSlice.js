@@ -47,6 +47,18 @@ export const editCoupon = createAsyncThunk('coupon/edit', async (data, { rejectW
   }
 })
 
+export const deleteCoupon = createAsyncThunk(
+  'coupon/delete',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await couponService.deleteOne(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  },
+)
+
 
 
 
@@ -110,6 +122,20 @@ const slice = createSlice({
       state.loading = false
     },
     [createCoupon.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+
+    [deleteCoupon.pending]: (state) => {
+      state.loading = true
+    },
+    [deleteCoupon.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+      state.singleData = payload
+    },
+    [deleteCoupon.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false

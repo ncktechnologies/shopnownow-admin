@@ -17,6 +17,7 @@ function CreateBand() {
     bulk_discount_amount: "",
     bulk_discount_percentage: "",
     general_discount: "",
+    free_delivery_threshold: ""
   };
 
   const [show, setShow] = useState(false);
@@ -47,6 +48,7 @@ function CreateBand() {
       bulk_discount_amount: "",
       bulk_discount_percentage: "",
       general_discount: "",
+      free_delivery_threshold:""
     });
   };
 
@@ -60,6 +62,7 @@ function CreateBand() {
       bulk_discount_amount: bandFormData.bulk_discount_amount,
       bulk_discount_percentage: bandFormData.bulk_discount_percentage,
       general_discount: bandFormData.general_discount,
+      free_delivery_threshold: bandFormData.free_delivery_threshold
     };
 
     setConfirmLoading(true);
@@ -174,6 +177,16 @@ function CreateBand() {
                 <option value="1">Yes</option>
                 <option value="0">No</option>
               </Form.Select>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Free delivery threshold</Form.Label>
+              <Form.Control
+                type="text"
+                name="free_delivery_threshold"
+                placeholder="Free delivery threshold"
+                onChange={(evt) => handleInputChange(evt)}
+              />
             </Form.Group>
 
             <Button

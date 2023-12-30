@@ -1,7 +1,7 @@
 import AuthAPI from './authInstance'
 
 const getAll = async (data) => {
-  const response = await AuthAPI.get(`/admin/list`)
+  const response = await AuthAPI.get(`/admin/admin/list`)
   return response.data
 }
 
@@ -17,7 +17,7 @@ const createAdmin = async (data) => {
 
 
 const deleteOne = async (data) => {
-  const response = await AuthAPI.delete(`/admin/delete-admin/${data}`)
+  const response = await AuthAPI.delete(`/admin/admin/delete/${data}`)
   return response.data
 }
 

@@ -10,6 +10,18 @@ export const getAllQuickGuides = createAsyncThunk('quickGuide/getAll', async (_,
   }
 })
 
+export const deleteQuickGuide = createAsyncThunk(
+  'quickGuide/delete',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await quickGuideService.deleteOne(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  },
+)
+
 
 export const createQuickGuide = createAsyncThunk('quickGuide/create', async (data, { rejectWithValue }) => {
   try {
@@ -75,6 +87,19 @@ const slice = createSlice({
     [getAllQuickGuides.rejected]: (state, action) => {
       state.error = true
       state.message = action.payload
+      state.loading = false
+    },
+    [deleteQuickGuide.pending]: (state) => {
+      state.loading = true
+    },
+    [deleteQuickGuide.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+      state.singleData = payload
+    },
+    [deleteQuickGuide.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
       state.loading = false
     },
 
