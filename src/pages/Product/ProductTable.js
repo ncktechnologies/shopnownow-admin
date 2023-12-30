@@ -1,4 +1,4 @@
-import { Avatar, Button, Table } from 'antd'
+import { Avatar, Button, Table, Switch } from 'antd'
 import moment from 'moment'
 import React, { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,7 @@ import EditProduct from './EditProduct'
 import { FilterOutlined } from '@ant-design/icons';
 
 
-const ProductTable = ({ data, loading, handleDelete }) => {
+const ProductTable = ({ data, loading, hideShowProduct }) => {
 
 
 
@@ -191,7 +191,11 @@ const ProductTable = ({ data, loading, handleDelete }) => {
           <Button style={{ marginRight: '5px' }} title='Edit product'>
             <EditProduct data={singleData}/>
           </Button>
-  
+          <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
+            
+            checked={singleData?.availability === 1}
+            onChange={() => hideShowProduct(singleData?.id)}
+          />
         </>
       ),
     },

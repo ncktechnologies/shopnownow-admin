@@ -31,7 +31,10 @@ const edit = async (formData) => {
   return response.data;
 };
 
-
+const hideShowProduct = async (data) => {
+  const response = await AuthAPI.post(`/admin/product/toggle/${data}`)
+  return response.data
+}
 
 const deleteOne = async (data) => {
   const response = await AuthAPI.delete(`/admin/product/delete/${data}`);
@@ -53,6 +56,7 @@ export const productService = {
   edit,
   filter,
   deleteOne,
+  hideShowProduct,
   addRelatedProduct,
   getTopRatedProduct
 };

@@ -19,7 +19,7 @@ const UserDetails = () => {
     dispatch(getOneUser(id));
   }, [id]);
 
-  console.log(singleData);
+  console.log(singleData?.user);
 
   return (
     <>

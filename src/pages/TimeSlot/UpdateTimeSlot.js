@@ -4,20 +4,23 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { editTimeSlot, getAllTimeSlots } from "../../redux/timeSlotSlice";
 import { notification, Avatar } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Row, Col } from "react-bootstrap";
+import { getAllBands } from "../../redux/bandSlice";
 
 const initialFormState = {
   start_time: "",
   end_time: "",
   is_available: "",
+  band_id: ""
   
 
 };
+
 
 function UpdateTimeSlot({timeslot}) {
 
@@ -31,6 +34,22 @@ function UpdateTimeSlot({timeslot}) {
   const handleEndTimeChange = (time) => {
     setSelectedEndTime(time);
   };
+
+  const { band } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getAllBands());
+  }, []);
+
+  const band_list =
+  band &&
+  band?.data?.map((band, key) => {
+    return (
+      <option value={band?.id} key={key}>
+        {band?.name}
+      </option>
+    );
+  });
 
   const [show, setShow] = useState(false);
 
@@ -48,6 +67,16 @@ function UpdateTimeSlot({timeslot}) {
       start_time: "",
       end_time: "",
       is_available: "",
+      band_id: ""
+
+    });
+  };
+
+  const handleBandChange = (event) => {
+    const selectedValue = event.target.value;
+    setTimeSlotFormData({
+      ...timeSlotFormData,
+      band_id: selectedValue,
     });
   };
 
@@ -78,6 +107,7 @@ function UpdateTimeSlot({timeslot}) {
         hour12: true,
       }),
       is_available: timeSlotFormData.is_available,
+      band_id: timeSlotFormData.band_id,
       timeslot_id: timeslot.id
  
     };
@@ -174,6 +204,24 @@ function UpdateTimeSlot({timeslot}) {
 
                 <option value="1">Yes</option>
                 <option value="0">No</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group
+              controlId="exampleForm.ControlSelect1"
+              style={{ marginBottom: "10px" }}
+            >
+              <Form.Label>Select band</Form.Label>
+              <Form.Select
+                name="band_id" // Add the "name" attribute
+                aria-label="Default select example"
+                required
+                onChange={handleBandChange}
+                value={timeSlotFormData.band_id}
+                defaultValue={timeslot.band_id}
+              >
+                <option>Select band</option>
+                {band_list}
               </Form.Select>
             </Form.Group>
 

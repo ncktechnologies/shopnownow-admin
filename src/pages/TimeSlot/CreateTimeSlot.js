@@ -1,21 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTimeSlot, getAllTimeSlots } from "../../redux/timeSlotSlice";
 import { notification, Avatar } from "antd";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Row, Col } from "react-bootstrap";
+import { getAllBands } from "../../redux/bandSlice";
+
 
 const initialFormState = {
   start_time: "",
   end_time: "",
   is_available: "",
-  
+  band_id: "",
+
 
 };
 
@@ -24,6 +27,22 @@ function CreateTimeSlot() {
   const [selectedStartTime, setSelectedStartTime] = useState(null);
   const [selectedEndTime, setSelectedEndTime] = useState(null);
 
+  const { band } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(getAllBands());
+  }, []);
+
+  const band_list =
+    band &&
+    band?.data?.map((band, key) => {
+      return (
+        <option value={band?.id} key={key}>
+          {band?.name}
+        </option>
+      );
+    });
+
   const handleStartTimeChange = (time) => {
     setSelectedStartTime(time);
   };
@@ -31,6 +50,10 @@ function CreateTimeSlot() {
   const handleEndTimeChange = (time) => {
     setSelectedEndTime(time);
   };
+
+
+
+  
 
   const [show, setShow] = useState(false);
 
@@ -48,6 +71,16 @@ function CreateTimeSlot() {
       start_time: "",
       end_time: "",
       is_available: "",
+      band_id: ""
+    });
+  };
+
+
+  const handleBandChange = (event) => {
+    const selectedValue = event.target.value;
+    setTimeSlotFormData({
+      ...timeSlotFormData,
+      band_id: selectedValue,
     });
   };
 
@@ -68,6 +101,7 @@ function CreateTimeSlot() {
         hour12: true,
       }),
       is_available: timeSlotFormData.is_available,
+      band_id: timeSlotFormData.band_id
  
     };
 
@@ -161,6 +195,23 @@ function CreateTimeSlot() {
 
                 <option value="1">Yes</option>
                 <option value="0">No</option>
+              </Form.Select>
+            </Form.Group>
+
+            <Form.Group
+              controlId="exampleForm.ControlSelect1"
+              style={{ marginBottom: "10px" }}
+            >
+              <Form.Label>Select band</Form.Label>
+              <Form.Select
+                name="band_id" // Add the "name" attribute
+                aria-label="Default select example"
+                required
+                onChange={handleBandChange}
+                value={timeSlotFormData.band_id}
+              >
+                <option>Select band</option>
+                {band_list}
               </Form.Select>
             </Form.Group>
 

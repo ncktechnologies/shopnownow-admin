@@ -102,9 +102,7 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot, handleDelete
       render: (singleData) => (
         <>
           <div>
-          <Button style={{ marginRight: '5px' }} title='View category details'>
-              <Link to={`/bands/details/${singleData?.id}`}>{'View'}</Link>
-            </Button>
+
 
             <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
               <UpdateTimeSlot timeslot={singleData} />

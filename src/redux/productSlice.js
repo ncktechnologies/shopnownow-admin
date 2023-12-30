@@ -81,6 +81,18 @@ export const deleteProduct = createAsyncThunk(
   },
 )
 
+export const hideShowProduct = createAsyncThunk(
+  'product/hideShowProduct',
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await productService.hideShowProduct(data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data)
+    }
+  },
+)
+
 export const createRelatedProduct = createAsyncThunk(
   'relatedProduct/create',
   async (data, { rejectWithValue }) => {
@@ -202,6 +214,20 @@ const slice = createSlice({
       state.loading = false
     },
     [createRelatedProduct.rejected]: (state, { payload }) => {
+      state.error = true
+      state.message = payload
+      state.loading = false
+    },
+
+
+    [hideShowProduct.pending]: (state) => {
+      state.loading = true
+    },
+    [hideShowProduct.fulfilled]: (state, { payload }) => {
+      state.message = payload?.message
+      state.loading = false
+    },
+    [hideShowProduct.rejected]: (state, { payload }) => {
       state.error = true
       state.message = payload
       state.loading = false

@@ -20,7 +20,7 @@ const ListUsers = () => {
   console.log("users", users);
 
   const keysToExport = ['name', 'email', 'phone_number', 'created_at'];
-  const dateSliceLength = 10; // Define the length to which you want to slice the date
+  const dateSliceLength = 10; 
 
   return (
     <div>

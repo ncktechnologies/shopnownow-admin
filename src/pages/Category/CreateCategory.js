@@ -265,7 +265,6 @@ function CreateCategory() {
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Order </Form.Label>
               <Form.Control

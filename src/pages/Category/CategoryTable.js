@@ -6,6 +6,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateCategory from './UpdateCategory'
 
+
 const CategoryTable = ({ data, loading, hideShowCategory }) => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')

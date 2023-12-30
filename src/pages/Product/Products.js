@@ -5,6 +5,7 @@ import CreateProduct from './CreateProduct'
 import {
   getAllProducts,
   deleteProduct,
+  hideShowProduct,
 } from "../../redux/productSlice";
 import { Link } from "react-router-dom";
 import ProductTable from "./ProductTable";
@@ -15,7 +16,7 @@ const Products = (props) => {
 
   const dispatch = useDispatch();
 
-
+console.log(products)
   const handleDelete = ({ id }) => {
     // alert('id', id)
     // return
@@ -51,6 +52,37 @@ const Products = (props) => {
     dispatch(getAllProducts());
   }, []);
 
+  const [isChecked, setIsChecked] = useState();
+
+
+  const handleHideShowProduct = (id) => {
+  
+    dispatch(hideShowProduct(id))
+    .then((response)=> {
+      if (response.type === "product/hideShowProduct/fulfilled") {
+        setIsChecked(!isChecked)
+        dispatch(getAllProducts());
+              notification.success({
+                message: " product updated successfully",
+              });
+            } else if (response.type === "product/hideShowProduct/rejected") {
+              notification.error({
+                message:
+                  response?.payload?.message ||
+                  "Error updating product, please try again",
+              });
+            }
+            
+    })
+    .catch((error) => {
+          notification.error({
+            message: "Error deleting category, please try again later",
+          });
+        });
+    
+    
+      };
+
 
   return (
     <div>
@@ -65,6 +97,7 @@ const Products = (props) => {
           data={products}
           loading={products?.loading}
           handleDelete={handleDelete}
+          hideShowProduct={handleHideShowProduct}
         />
       )}
     </div>
