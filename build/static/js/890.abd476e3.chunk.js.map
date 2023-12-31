@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/890.abd476e3.chunk.js","mappings":"iIAQA,UANoB,WAClB,OACE,wCAEH,C","sources":["pages/Bookings/BookingInfo.js"],"sourcesContent":["import React from 'react'\n\nconst BookingInfo = () => {\n  return (\n    <div>BookingInfo</div>\n  )\n}\n\nexport default BookingInfo"],"names":[],"sourceRoot":""}
