@@ -15,10 +15,25 @@ import ExpirySession from "../../utils/expirySession";
 const Products = (props) => {
   const { products } = useSelector((state) => state);
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(products?.data?.current_page);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [loading, setLoading] = useState(products?.loading);
+
+  useEffect(() => {
+    const fetchData = () => {
+      try {
+        console.log("Fetching products for page:", currentPage);
+        dispatch(getAllProducts(currentPage));
+        console.log("Products fetched successfully");
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchData();
+  }, [currentPage, dispatch]);
+
   const handleDelete = ({ id }) => {
-    // alert('id', id)
-    // return
     if (
       !window.confirm("Do You want to permanently delete the selected product?")
     ) {
@@ -47,16 +62,26 @@ const Products = (props) => {
       });
   };
 
-  useEffect(() => {
-    dispatch(getAllProducts(currentPage));
-  }, [currentPage]);
+  const handleGetProducts = (i) => {
+    setLoading(true);
 
-  console.log(products);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+    dispatch(getAllProducts(i))
+      .then((response) => {
+        if (response.type === "product/getAll/fulfilled") {
+          setLoading(false);
+          setCurrentPage(i);
+          console.log(products);
+        } else if (response.type === "product/getAll/rejected") {
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        notification.error({
+          message: "Error getting products, please try again later",
+        });
+      });
   };
-
 
   const [isChecked, setIsChecked] = useState();
 
@@ -85,6 +110,10 @@ const Products = (props) => {
   };
   const { admin } = ExpirySession.get("user");
 
+  const linkArray = products?.data?.links?.slice(1, -1);
+
+  console.log(linkArray);
+
   return (
     <div>
       {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ? (
@@ -103,21 +132,31 @@ const Products = (props) => {
         <PageHeader extra={[]} title="Products" />
       )}
 
-{products?.data && (
+      {products?.data && (
         <ProductTable
-          data={products?.data?.data}
-          loading={products?.loading}
+          data={products?.data}
+          loading={loading}
           handleDelete={handleDelete}
           hideShowProduct={handleHideShowProduct}
         />
       )}
-      <StyledDiv>
-        <Pagination
-          current={currentPage}
-          total={products?.totalPages * 10} // Assuming 10 items per page
-          onChange={handlePageChange}
-        />
-      </StyledDiv>
+      {linkArray && (
+        <StyledDiv>
+          {linkArray?.map((link, i) => (
+            <Button
+              onClick={() => handleGetProducts(link.label)}
+              key={i}
+              style={{
+                color: currentPage == link?.label ? "white" : "black",
+                background: currentPage == link?.label ? "#ff0303" : "white",
+                border: "#ff0303",
+              }}
+            >
+              {link.label}
+            </Button>
+          ))}
+        </StyledDiv>
+      )}
     </div>
   );
 };
