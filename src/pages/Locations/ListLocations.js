@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { hideShowLocation, getAllLocations } from "../../redux/locationSlice";
 import CreateLocation from "./CreateLocation";
 import LocationTable from "./LocationTable";
+import ExpirySession from "../../utils/expirySession";
+
 
 const ListLocations = () => {
   const { location } = useSelector((state) => state);
@@ -45,16 +47,26 @@ const [isChecked, setIsChecked] = useState();
     
       };
 
+      const { admin } = ExpirySession.get("user");
+
+
   return (
     <div>
-      <PageHeader
+            {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ? ( <PageHeader
         extra={[
           <Button key="CreateLocations" style={{color: '#ff0303', border: '1px solid #ff0303'}}>
             <CreateLocation />
           </Button>,
         ]}
         title="Locations"
-      />
+      />) :  <PageHeader
+      extra={[
+   
+      ]}
+      title="Locations"
+    />}
+
+     
 
       {location?.data && (  <LocationTable
         data={location?.data}

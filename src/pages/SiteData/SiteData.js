@@ -1,132 +1,107 @@
-import React, { useEffect, useState } from 'react'
-import { Button, notification, PageHeader } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { editSiteData, getAllSiteData } from '../../redux/siteDataSlice'
-import UpdateSiteData from './UpdateSiteData'
+import React, { useEffect, useState } from "react";
+import { Button, notification, PageHeader } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { editSiteData, getAllSiteData } from "../../redux/siteDataSlice";
+import UpdateSiteData from "./UpdateSiteData";
 import { useNavigate, useParams } from "react-router-dom";
 import { BsPhone, BsArrowLeft, BsEnvelope } from "react-icons/bs";
 import styled from "styled-components";
 import moment from "moment";
 import { Avatar, Card, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
+import ExpirySession from "../../utils/expirySession";
+
 
 const SiteData = () => {
+  const { sitedata } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-    const { sitedata } = useSelector((state) => state)
-    const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getAllSiteData());
+  }, []);
 
-    useEffect(() => {
-        dispatch(getAllSiteData())
-      }, [])
+  const { admin } = ExpirySession.get("user");
+
 
   return (
-    <div><PageHeader
-    extra={[
-      <Button key='editSiteData' style={{color: '#ff0303', border: '1px solid #ff0303'}}>
-        <UpdateSiteData sitedata={sitedata}/>
-      </Button>,
-    ]}
-    title='Site Data'
-  />
+    <div>
+{(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ? ( <PageHeader
+        extra={[
+          <Button
+            key="editSiteData"
+            style={{ color: "#ff0303", border: "1px solid #ff0303" }}
+          >
+            <UpdateSiteData sitedata={sitedata} />
+          </Button>,
+        ]}
+        title="Site Data"
+      />) :  <PageHeader
+      extra={[
   
-  <StyledContainer>
-      <div>
-        <div className="userInfo">
-          <Card
-            className="userInfo__card"
-          >
+      ]}
+      title="Site Data"
+    /> }
+     
 
-            <Meta
-              description={
-                <div className="metaDescription">
-           
-                  <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
-                    <h2>FAQ</h2>
-                    <strong>{sitedata?.data?.faq}</strong>
-                  
+      <StyledContainer>
+        <div>
+          <div className="userInfo">
+            <Card className="userInfo__card">
+              <Meta
+                description={
+                  <div className="metaDescription">
+                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
+                      <h2>FAQ</h2>
+                      <strong>{sitedata?.data?.faq}</strong>
+                    </div>
                   </div>
-
-                
-
-            
-                </div>
-              }
-            />
-          </Card>
-          <Card
-            className="userInfo__card"
-          >
-
-            <Meta
-              description={
-                <div className="metaDescription">
-           
-            
-
-                  <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
-                    <h2>Terms and Conditions</h2>
-                    <strong>{sitedata?.data?.terms_and_conditions}</strong>
-                  
+                }
+              />
+            </Card>
+            <Card className="userInfo__card">
+              <Meta
+                description={
+                  <div className="metaDescription">
+                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
+                      <h2>Terms and Conditions</h2>
+                      <strong>{sitedata?.data?.terms_and_conditions}</strong>
+                    </div>
                   </div>
-
-
-            
-                </div>
-              }
-            />
-          </Card>
-          <Card
-            className="userInfo__card"
-          >
-
-            <Meta
-              description={
-                <div className="metaDescription">
-           
-            
-
-                  <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
-                    <h2>Privacy Policy</h2>
-                    <strong>{sitedata?.data?.privacy_policy}</strong>
-                  
+                }
+              />
+            </Card>
+            <Card className="userInfo__card">
+              <Meta
+                description={
+                  <div className="metaDescription">
+                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
+                      <h2>Privacy Policy</h2>
+                      <strong>{sitedata?.data?.privacy_policy}</strong>
+                    </div>
                   </div>
-
-                 
-
-            
-                </div>
-              }
-            />
-          </Card>
-          <Card
-            className="userInfo__card"
-          >
-
-            <Meta
-              description={
-                <div className="metaDescription">
-        
-
-                  <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
-                    <h2>Contact Data</h2>
-                    <strong>{sitedata?.data?.contact_data}</strong>
-                  
+                }
+              />
+            </Card>
+            <Card className="userInfo__card">
+              <Meta
+                description={
+                  <div className="metaDescription">
+                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
+                      <h2>Contact Data</h2>
+                      <strong>{sitedata?.data?.contact_data}</strong>
+                    </div>
                   </div>
-
-            
-                </div>
-              }
-            />
-          </Card>
+                }
+              />
+            </Card>
+          </div>
         </div>
-      </div>
-    </StyledContainer>
-  
-  </div>
-  )
-}
+      </StyledContainer>
+    </div>
+  );
+};
 
-export default SiteData
+export default SiteData;
 
 const StyledContainer = styled.div`
   .ant-card-meta {

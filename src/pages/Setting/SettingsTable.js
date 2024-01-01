@@ -1,32 +1,35 @@
-import { Button, Table, Switch } from 'antd'
-import moment from 'moment'
-import React, { useRef, useState } from 'react'
-import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateSettings from './UpdateSettings'
+import { Button, Table, Switch } from "antd";
+import moment from "moment";
+import React, { useRef, useState } from "react";
+import { getColumnSearchProps } from "../../utils/tableColSearch";
+import UpdateSettings from "./UpdateSettings";
+import ExpirySession from "../../utils/expirySession";
 
 const SettingsTable = ({ data, loading }) => {
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const searchInput = useRef(null)
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
   const handleReset = (clearFilters) => {
-    clearFilters()
-    setSearchText('')
-  }
+    clearFilters();
+    setSearchText("");
+  };
+
+  const { admin } = ExpirySession.get("user");
 
   const columns = [
     {
-      title: 'Key',
-      dataIndex: 'key',
-      key: 'key',
+      title: "Key",
+      dataIndex: "key",
+      key: "key",
       ...getColumnSearchProps({
-        dataIndex: 'key',
+        dataIndex: "key",
         handleReset,
         searchInput,
         handleSearch,
@@ -37,11 +40,11 @@ const SettingsTable = ({ data, loading }) => {
       }),
     },
     {
-      title: 'Value',
-      dataIndex: 'value',
-      key: 'value',
+      title: "Value",
+      dataIndex: "value",
+      key: "value",
       ...getColumnSearchProps({
-        dataIndex: 'value',
+        dataIndex: "value",
         handleReset,
         searchInput,
         handleSearch,
@@ -52,23 +55,24 @@ const SettingsTable = ({ data, loading }) => {
       }),
     },
     {
-      title: 'Actions',
-      key: 'id',
-      align: 'center',
+      title: "Actions",
+      key: "id",
+      align: "center",
       render: (singleData) => (
         <>
-          <div>
-          <Button style={{ marginRight: '5px' }} title='Edit Location'>
-              <UpdateSettings settings={singleData} />
-            </Button>
+          {(admin?.level === 0 || admin?.level === 1) && (
+            <div>
+              <Button style={{ marginRight: "5px" }} title="Edit Location">
+                <UpdateSettings settings={singleData} />
+              </Button>
+            </div>
+          )}
 
-
-          
-          </div>
+          {(admin?.level === 2 || admin?.level === 3) && <div>N/a</div>}
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -77,11 +81,11 @@ const SettingsTable = ({ data, loading }) => {
         loading={loading}
         pagination={data?.length > 10 ? true : false}
         dataSource={data}
-        rowKey='id'
-        scroll={{ x: 'max-content' }}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default SettingsTable
+export default SettingsTable;

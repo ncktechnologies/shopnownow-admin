@@ -1,36 +1,38 @@
-import { Avatar, Button, Table, Switch } from 'antd'
-import moment from 'moment'
-import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { UserOutlined } from '@ant-design/icons'
-import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateDeliveryLocation from './UpdateDeliveryLocation'
-import { NumericFormat } from 'react-number-format'
-
+import { Avatar, Button, Table, Switch } from "antd";
+import moment from "moment";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+import { getColumnSearchProps } from "../../utils/tableColSearch";
+import UpdateDeliveryLocation from "./UpdateDeliveryLocation";
+import { NumericFormat } from "react-number-format";
+import ExpirySession from "../../utils/expirySession";
 
 const DeliveryLocationTable = ({ data, loading, handleDelete }) => {
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const searchInput = useRef(null)
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
   const handleReset = (clearFilters) => {
-    clearFilters()
-    setSearchText('')
-  }
+    clearFilters();
+    setSearchText("");
+  };
+
+  const { admin } = ExpirySession.get("user");
 
   const columns = [
     {
-      title: 'Location',
-      dataIndex: 'location',
-      key: 'location',
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
       ...getColumnSearchProps({
-        dataIndex: 'location',
+        dataIndex: "location",
         handleReset,
         searchInput,
         handleSearch,
@@ -42,27 +44,27 @@ const DeliveryLocationTable = ({ data, loading, handleDelete }) => {
     },
 
     {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
       render: (price) => (
-        <span style={{ whiteSpace: 'nowrap' }}>
+        <span style={{ whiteSpace: "nowrap" }}>
           <NumericFormat
             value={price}
-            displayType={'text'}
+            displayType={"text"}
             thousandSeparator={true}
-            prefix={'₦'}
+            prefix={"₦"}
           />
         </span>
       ),
     },
 
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      title: "Created At",
+      dataIndex: "created_at",
+      key: "created_at",
       ...getColumnSearchProps({
-        dataIndex: 'created_at',
+        dataIndex: "created_at",
         handleReset,
         searchInput,
         handleSearch,
@@ -72,38 +74,77 @@ const DeliveryLocationTable = ({ data, loading, handleDelete }) => {
         searchedColumn,
       }),
       render: (created_at) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {moment(created_at).format('DD MMM YYYY')}</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          {moment(created_at).format("DD MMM YYYY")}
+        </span>
       ),
     },
 
     {
-      title: 'Actions',
-      key: 'id',
-      align: 'center',
+      title: "Actions",
+      key: "id",
+      align: "center",
       render: (singleData) => (
         <>
-          <div>
-      
-  <Button style={{ marginRight: '5px' }} title='View category details'>
-              <Link to={`/delivery/details/${singleData?.id}`}>{'View'}</Link>
-            </Button>
+          {admin?.level === 0 && (
+            <div>
+              <Button
+                style={{ marginRight: "5px" }}
+                title="View category details"
+              >
+                <Link to={`/delivery/details/${singleData?.id}`}>{"View"}</Link>
+              </Button>
 
-            <Button style={{ marginRight: '5px' }} title='Edit delivery location'>
-              <UpdateDeliveryLocation deliveryLocation={singleData} />
-            </Button>
+              <Button
+                style={{ marginRight: "5px" }}
+                title="Edit delivery location"
+              >
+                <UpdateDeliveryLocation deliveryLocation={singleData} />
+              </Button>
 
-            <Button
-            danger
-            onClick={() => handleDelete(singleData)}
-            title='delete delivery location'
-          >
-            delete
-          </Button>
-          </div>
+              <Button
+                danger
+                onClick={() => handleDelete(singleData)}
+                title="delete delivery location"
+              >
+                delete
+              </Button>
+            </div>
+          )}
+
+          {admin?.level === 1 && (
+            <div>
+              <Button
+                style={{ marginRight: "5px" }}
+                title="View category details"
+              >
+                <Link to={`/delivery/details/${singleData?.id}`}>{"View"}</Link>
+              </Button>
+
+              <Button
+                style={{ marginRight: "5px" }}
+                title="Edit delivery location"
+              >
+                <UpdateDeliveryLocation deliveryLocation={singleData} />
+              </Button>
+            </div>
+          )}
+
+          {(admin?.level === 2 || admin?.level === 3) && (
+            <div>
+              <Button
+                style={{ marginRight: "5px" }}
+                title="View category details"
+              >
+                <Link to={`/delivery/details/${singleData?.id}`}>{"View"}</Link>
+              </Button>
+            </div>
+          )}
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -112,11 +153,11 @@ const DeliveryLocationTable = ({ data, loading, handleDelete }) => {
         loading={loading}
         pagination={data?.length > 10 ? true : false}
         dataSource={data}
-        rowKey='id'
-        scroll={{ x: 'max-content' }}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default DeliveryLocationTable
+export default DeliveryLocationTable;

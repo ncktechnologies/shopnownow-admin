@@ -13,6 +13,7 @@ const initialFormState = {
   email: "",
   password: "",
   password_confirmation: "",
+  level: ""
 };
 
 function Createadmin() {
@@ -55,6 +56,7 @@ function Createadmin() {
       email: "",
       password: "",
       password_confirmation: "",
+      level: ""
     });
   };
 
@@ -64,6 +66,8 @@ function Createadmin() {
     formData.append("name", adminFormData.name);
     formData.append("email", adminFormData.email);
     formData.append("password", adminFormData.password);
+    formData.append("level", adminFormData.level);
+
 
     setConfirmLoading(true);
     dispatch(createAdmin(formData))
@@ -133,6 +137,27 @@ function Createadmin() {
               />
             </Form.Group>
 
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label> Level </Form.Label>
+              <Form.Select
+                name="level"
+                onChange={(evt) =>
+                  setadminFormData({
+                    ...adminFormData,
+                    level: evt.target.value,
+                  })
+                }
+                aria-label="Default select example"
+                value={adminFormData.level}
+              >
+                <option>Select level</option>
+
+                <option value="0">Super admin</option>
+                <option value="1">Manager</option>
+                <option value="2">Supervisor</option>
+                <option value="3">Customer care</option>
+              </Form.Select>
+            </Form.Group>
     
 
             <Form.Group

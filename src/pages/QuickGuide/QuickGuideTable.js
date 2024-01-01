@@ -1,34 +1,41 @@
-import { Avatar, Button, Table, Switch} from 'antd'
-import moment from 'moment'
-import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { UserOutlined } from '@ant-design/icons'
-import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateQuickGuide from './UpdateQuickGuide'
+import { Avatar, Button, Table, Switch } from "antd";
+import moment from "moment";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+import { getColumnSearchProps } from "../../utils/tableColSearch";
+import UpdateQuickGuide from "./UpdateQuickGuide";
+import ExpirySession from "../../utils/expirySession";
 
-const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) => {
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const searchInput = useRef(null)
+const QuickGuideTable = ({
+  data,
+  loading,
+  hideShowQuickGuide,
+  handleDelete,
+}) => {
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
   const handleReset = (clearFilters) => {
-    clearFilters()
-    setSearchText('')
-  }
+    clearFilters();
+    setSearchText("");
+  };
+  const { admin } = ExpirySession.get("user");
 
   const columns = [
     {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       ...getColumnSearchProps({
-        dataIndex: 'title',
+        dataIndex: "title",
         handleReset,
         searchInput,
         handleSearch,
@@ -39,11 +46,11 @@ const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) =>
       }),
     },
     {
-      title: 'Body',
-      dataIndex: 'body',
-      key: 'body',
+      title: "Body",
+      dataIndex: "body",
+      key: "body",
       ...getColumnSearchProps({
-        dataIndex: 'body',
+        dataIndex: "body",
         handleReset,
         searchInput,
         handleSearch,
@@ -56,43 +63,46 @@ const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) =>
       render: (body) => (
         <span style={{ whiteSpace: "nowrap" }}>
           {" "}
-          {body && body?.substring(0, 60)}{" "}
-          {body && body?.length >= 60 && "..."}
+          {body && body?.substring(0, 60)} {body && body?.length >= 60 && "..."}
         </span>
       ),
     },
     {
-      title: 'Image',
-      key: 'id',
-      dataIndex: 'image_path',
-      align: 'center',
+      title: "Image",
+      key: "id",
+      dataIndex: "image_path",
+      align: "center",
       render: (image_path) => (
         <div>
           {image_path ? (
             <img
               style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '50%',
-                objectFit: 'cover',
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                objectFit: "cover",
               }}
               src={image_path}
               height={60}
               width={60}
-              alt='avatar'
+              alt="avatar"
             />
           ) : (
-            <Avatar style={{ backgroundColor: '#3f8bcaa1' }} icon={<UserOutlined />} size={50} />
+            <Avatar
+              style={{ backgroundColor: "#3f8bcaa1" }}
+              icon={<UserOutlined />}
+              size={50}
+            />
           )}
         </div>
       ),
     },
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      title: "Created At",
+      dataIndex: "created_at",
+      key: "created_at",
       ...getColumnSearchProps({
-        dataIndex: 'created_at',
+        dataIndex: "created_at",
         handleReset,
         searchInput,
         handleSearch,
@@ -102,37 +112,67 @@ const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) =>
         searchedColumn,
       }),
       render: (created_at) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {moment(created_at).format('DD MMM YYYY')}</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          {moment(created_at).format("DD MMM YYYY")}
+        </span>
       ),
     },
 
     {
-      title: 'Actions',
-      key: 'id',
-      align: 'center',
+      title: "Actions",
+      key: "id",
+      align: "center",
       render: (singleData) => (
         <>
-          <div>
-            <Button style={{ marginRight: '5px' }} title='Edit QuickGuide'>
-              <UpdateQuickGuide quickGuide={singleData} />
-            </Button>
-            <Button style={{ marginRight: '5px' }}
-            danger
-            onClick={() => handleDelete(singleData)}
-            title='delete quick guide'
-          >
-            delete
-          </Button>
-            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
-            
-              checked={singleData?.is_hidden === 0}
-              onChange={() => hideShowQuickGuide(singleData?.id)}
-            />
-          </div>
+          {admin?.level === 0 && (
+            <div>
+              <Button style={{ marginRight: "5px" }} title="Edit QuickGuide">
+                <UpdateQuickGuide quickGuide={singleData} />
+              </Button>
+              <Button
+                style={{ marginRight: "5px" }}
+                danger
+                onClick={() => handleDelete(singleData)}
+                title="delete quick guide"
+              >
+                delete
+              </Button>
+              <Switch
+                style={{ backgroundColor: "#ff0303", marginLeft: "10px" }}
+                checked={singleData?.is_hidden === 0}
+                onChange={() => hideShowQuickGuide(singleData?.id)}
+              />
+            </div>
+          )}
+          {admin?.level === 1 && (
+            <div>
+              <Button style={{ marginRight: "5px" }} title="Edit QuickGuide">
+                <UpdateQuickGuide quickGuide={singleData} />
+              </Button>
+
+              <Switch
+                style={{ backgroundColor: "#ff0303", marginLeft: "10px" }}
+                checked={singleData?.is_hidden === 0}
+                onChange={() => hideShowQuickGuide(singleData?.id)}
+              />
+            </div>
+          )}
+
+          {admin?.level === 2 && (
+            <div>
+              <Switch
+                style={{ backgroundColor: "#ff0303", marginLeft: "10px" }}
+                checked={singleData?.is_hidden === 0}
+                onChange={() => hideShowQuickGuide(singleData?.id)}
+              />
+            </div>
+          )}
+          {admin?.level === 3 && <div>N/a</div>}
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -141,11 +181,11 @@ const QuickGuideTable = ({ data, loading, hideShowQuickGuide, handleDelete }) =>
         loading={loading}
         pagination={data.length > 10 ? true : false}
         dataSource={data}
-        rowKey='id'
-        scroll={{ x: 'max-content' }}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default QuickGuideTable
+export default QuickGuideTable;

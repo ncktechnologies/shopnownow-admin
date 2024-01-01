@@ -2,14 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { productService } from '../services/productService'
 
 
-export const getAllProducts = createAsyncThunk('product/getAll', async (_, { rejectWithValue }) => {
+export const getAllProducts = createAsyncThunk('product/getAll', async (page, { rejectWithValue }) => {
   try {
-    const response = await productService.getAll()
-    return response
+    const response = await productService.getAll(page);
+    return response;
   } catch (error) {
-    return rejectWithValue(error?.response?.data)
+    return rejectWithValue(error?.response?.data);
   }
-})
+});
 
 export const getOneProduct = createAsyncThunk(
   'product/getOne',

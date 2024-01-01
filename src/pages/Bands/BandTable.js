@@ -1,36 +1,38 @@
-import { Avatar, Button, Table, Switch } from 'antd'
-import moment from 'moment'
-import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { UserOutlined } from '@ant-design/icons'
-import { getColumnSearchProps } from '../../utils/tableColSearch'
-import UpdateBand from './UpdateBand'
-import { NumericFormat } from 'react-number-format'
+import { Avatar, Button, Table, Switch } from "antd";
+import moment from "moment";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
+import { getColumnSearchProps } from "../../utils/tableColSearch";
+import UpdateBand from "./UpdateBand";
+import { NumericFormat } from "react-number-format";
+import ExpirySession from "../../utils/expirySession";
 
 const BandTable = ({ data, loading }) => {
-  const [searchText, setSearchText] = useState('')
-  const [searchedColumn, setSearchedColumn] = useState('')
-  const searchInput = useRef(null)
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm()
-    setSearchText(selectedKeys[0])
-    setSearchedColumn(dataIndex)
-  }
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
   const handleReset = (clearFilters) => {
-    clearFilters()
-    setSearchText('')
-  }
-  
+    clearFilters();
+    setSearchText("");
+  };
+
+  const { admin } = ExpirySession.get("user");
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       ...getColumnSearchProps({
-        dataIndex: 'name',
+        dataIndex: "name",
         handleReset,
         searchInput,
         handleSearch,
@@ -55,11 +57,11 @@ const BandTable = ({ data, loading }) => {
     },
 
     {
-      title: 'Discount enabled',
-      dataIndex: 'discount_enabled',
-      key: 'discount_enabled',
+      title: "Discount enabled",
+      dataIndex: "discount_enabled",
+      key: "discount_enabled",
       ...getColumnSearchProps({
-        dataIndex: 'discount_enabled',
+        dataIndex: "discount_enabled",
         handleReset,
         searchInput,
         handleSearch,
@@ -69,16 +71,19 @@ const BandTable = ({ data, loading }) => {
         searchedColumn,
       }),
       render: (discount_enabled) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {discount_enabled === 1 ? "Yes" : "No"}</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          {discount_enabled === 1 ? "Yes" : "No"}
+        </span>
       ),
     },
 
     {
-      title: 'Minimum',
-      dataIndex: 'minimum',
-      key: 'minimum',
+      title: "Minimum",
+      dataIndex: "minimum",
+      key: "minimum",
       ...getColumnSearchProps({
-        dataIndex: 'minimum',
+        dataIndex: "minimum",
         handleReset,
         searchInput,
         handleSearch,
@@ -90,27 +95,27 @@ const BandTable = ({ data, loading }) => {
     },
 
     {
-      title: 'Free delivery threshold',
-      dataIndex: 'free_delivery_threshold',
-      key: 'free_delivery_threshold',
+      title: "Free delivery threshold",
+      dataIndex: "free_delivery_threshold",
+      key: "free_delivery_threshold",
       render: (free_delivery_threshold) => (
-        <span style={{ whiteSpace: 'nowrap' }}>
+        <span style={{ whiteSpace: "nowrap" }}>
           <NumericFormat
             value={free_delivery_threshold}
-            displayType={'text'}
+            displayType={"text"}
             thousandSeparator={true}
-            prefix={'₦'}
+            prefix={"₦"}
           />
         </span>
       ),
     },
 
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      title: "Created At",
+      dataIndex: "created_at",
+      key: "created_at",
       ...getColumnSearchProps({
-        dataIndex: 'created_at',
+        dataIndex: "created_at",
         handleReset,
         searchInput,
         handleSearch,
@@ -120,32 +125,49 @@ const BandTable = ({ data, loading }) => {
         searchedColumn,
       }),
       render: (created_at) => (
-        <span style={{ whiteSpace: 'nowrap' }}> {moment(created_at).format('DD MMM YYYY')}</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          {moment(created_at).format("DD MMM YYYY")}
+        </span>
       ),
     },
 
     {
-      title: 'Actions',
-      key: 'id',
-      align: 'center',
+      title: "Actions",
+      key: "id",
+      align: "center",
       render: (singleData) => (
         <>
-          <div>
-          <Button style={{ marginRight: '5px' }} title='View category details'>
-              <Link to={`/bands/details/${singleData?.id}`}>{'View'}</Link>
-            </Button>
+          {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2) && (
+            <div>
+              {" "}
+              <Button
+                style={{ marginRight: "5px" }}
+                title="View category details"
+              >
+                <Link to={`/bands/details/${singleData?.id}`}>{"View"}</Link>
+              </Button>
+              <Button style={{ marginRight: "5px" }} title="Edit band">
+                <UpdateBand band={singleData} />
+              </Button>
+            </div>
+          )}
 
-            <Button style={{ marginRight: '5px' }} title='Edit band'>
-              <UpdateBand band={singleData} />
-            </Button>
-    
-
-          
-          </div>
+          {admin?.level === 3 && (
+            <div>
+              {" "}
+              <Button
+                style={{ marginRight: "5px" }}
+                title="View band details"
+              >
+                <Link to={`/bands/details/${singleData?.id}`}>{"View"}</Link>
+              </Button>
+            </div>
+          )}
         </>
       ),
     },
-  ]
+  ];
 
   return (
     <div>
@@ -154,11 +176,11 @@ const BandTable = ({ data, loading }) => {
         loading={loading}
         pagination={data.length > 10 ? true : false}
         dataSource={data}
-        rowKey='id'
-        scroll={{ x: 'max-content' }}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
       />
     </div>
-  )
-}
+  );
+};
 
-export default BandTable
+export default BandTable;

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { getAllTimeSlots, showTimeSlot, hideTimeSlot, deleteTimeSlot } from '../../redux/timeSlotSlice'
 import CreateTimeSlot from './CreateTimeSlot'
 import TimeSlotTable from './TimeSlotTable'
+import ExpirySession from "../../utils/expirySession";
+
 
 const TimeSlots = () => {
   const { timeslot } = useSelector((state) => state)
@@ -107,16 +109,26 @@ const TimeSlots = () => {
               });
           };
 
+          const { admin } = ExpirySession.get("user");
+
+
   return (
     <div>
-      <PageHeader
+
+      {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ?  ( <PageHeader
         extra={[
           <Button key='Create time slot' style={{color: '#ff0303', border: '1px solid #ff0303'}}>
             <CreateTimeSlot />
           </Button>,
         ]}
         title='Time slots'
-      />
+      />) :  <PageHeader
+      extra={[
+      
+      ]}
+      title='Time slots'
+    />}
+     
 
 {timeslot?.data?.timeSlots && (<TimeSlotTable
         data={timeslot?.data?.timeSlots}

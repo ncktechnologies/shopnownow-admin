@@ -1,9 +1,14 @@
 import AuthAPI from "./authInstance";
 
-const getAll = async (data) => {
-  const response = await AuthAPI.get(`/admin/product/list`);
+// product.service.js
+
+const getAll = async (page) => {
+  const response = await AuthAPI.get(`/admin/product/list?page=${page}`);
   return response.data;
 };
+
+// ... (other methods remain unchanged)
+
 
 const getTopRatedProduct = async (data) => {
   const response = await AuthAPI.get(`/admin/product/top-rated`);

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateHubLocation from './UpdateLocation'
+import ExpirySession from "../../utils/expirySession";
+
 
 const LocationTable = ({ data, loading, hideShowLocation }) => {
   const [searchText, setSearchText] = useState('')
@@ -21,6 +23,9 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
     clearFilters()
     setSearchText('')
   }
+
+  const { admin } = ExpirySession.get("user");
+
 
   const columns = [
     {
@@ -64,10 +69,13 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
       align: 'center',
       render: (singleData) => (
         <>
-          <div>
+
+        {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ? ( <div>
           {/* <Button style={{ marginRight: '5px' }} title='Edit Location'>
               <UpdateHubLocation location={singleData} />
             </Button> */}
+
+  
 
 
             <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
@@ -75,7 +83,8 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
             checked={singleData?.hidden === 0}
             onChange={() => hideShowLocation(singleData?.id)}
           />
-          </div>
+         
+          </div>) : 'N/a'}
         </>
       ),
     },

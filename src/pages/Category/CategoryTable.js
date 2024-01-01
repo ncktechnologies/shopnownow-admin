@@ -5,9 +5,14 @@ import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateCategory from './UpdateCategory'
+import { useDispatch, useSelector } from 'react-redux'
+import ExpirySession from "../../utils/expirySession";
+
 
 
 const CategoryTable = ({ data, loading, hideShowCategory }) => {
+
+  const dispatch = useDispatch()
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef(null)
@@ -22,7 +27,9 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
     clearFilters()
     setSearchText('')
   }
-  
+
+  const { admin } = ExpirySession.get("user");
+
 
   const columns = [
     {
@@ -130,7 +137,9 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
       render: (singleData) => (
         <>
           <div>
-          <Button style={{ marginRight: '5px' }} title='View category details'>
+          {(admin?.level === 0 || admin?.level === 1) && (
+              <>
+           <Button style={{ marginRight: '5px' }} title='View category details'>
               <Link to={`/categories/details/${singleData?.id}`}>{'View'}</Link>
             </Button>
 
@@ -144,6 +153,23 @@ const CategoryTable = ({ data, loading, hideShowCategory }) => {
               checked={singleData?.hidden === 0}
               onChange={() => hideShowCategory(singleData?.id)}
             />
+              </>
+
+            )}
+
+            {admin?.level === 3 && (
+              <Button style={{ marginRight: '5px' }} title='View category details'>
+              <Link to={`/categories/details/${singleData?.id}`}>{'View'}</Link>
+            </Button>
+            )}
+
+            {admin?.level === 2 && (
+             <Button style={{ marginRight: '5px' }} title='View category details'>
+             <Link to={`/categories/details/${singleData?.id}`}>{'View'}</Link>
+           </Button>
+            )}
+
+          
           </div>
         </>
       ),

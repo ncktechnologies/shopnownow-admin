@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { Button, notification, PageHeader } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteDeliveryLocation, getAllDeliveryLocations } from '../../redux/deliveryLocationSlice'
-import CreateDeliveryLocation from './CreateDeliveryLocation'
-import DeliveryLocationTable from './DeliveryLocationTable'
+import React, { useEffect, useState } from "react";
+import { Button, notification, PageHeader } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteDeliveryLocation,
+  getAllDeliveryLocations,
+} from "../../redux/deliveryLocationSlice";
+import CreateDeliveryLocation from "./CreateDeliveryLocation";
+import DeliveryLocationTable from "./DeliveryLocationTable";
+import ExpirySession from "../../utils/expirySession";
 
 const DeliveryLocations = () => {
-  const { deliveryLocation } = useSelector((state) => state)
-  const dispatch = useDispatch()
-
+  const { deliveryLocation } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllDeliveryLocations())
-  }, [])
+    dispatch(getAllDeliveryLocations());
+  }, []);
 
   const handleDelete = ({ id }) => {
-   
     if (
-      !window.confirm("Do You want to permanently delete the selected delivery location?")
+      !window.confirm(
+        "Do You want to permanently delete the selected delivery location?"
+      )
     ) {
       return;
     }
@@ -25,7 +29,7 @@ const DeliveryLocations = () => {
     dispatch(deleteDeliveryLocation(id))
       .then((response) => {
         if (response.type === "deliveryLocation/delete/fulfilled") {
-          dispatch(getAllDeliveryLocations())
+          dispatch(getAllDeliveryLocations());
           notification.success({
             message: " Delivery Location deleted successfully",
           });
@@ -44,27 +48,35 @@ const DeliveryLocations = () => {
       });
   };
 
-
+  const { admin } = ExpirySession.get("user");
 
   return (
     <div>
-      <PageHeader
-        extra={[
-          <Button key='Createcoupon' style={{color: '#ff0303', border: '1px solid #ff0303'}}>
-            <CreateDeliveryLocation />
-          </Button>,
-        ]}
-        title='Delivery location'
-      />
+      {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ? (
+        <PageHeader
+          extra={[
+            <Button
+              key="Createcoupon"
+              style={{ color: "#ff0303", border: "1px solid #ff0303" }}
+            >
+              <CreateDeliveryLocation />
+            </Button>,
+          ]}
+          title="Delivery location"
+        />
+      ) : (
+        <PageHeader extra={[]} title="Delivery location" />
+      )}
 
-      {deliveryLocation?.data?.locations && ( <DeliveryLocationTable
-        data={deliveryLocation?.data?.locations}
-        loading={deliveryLocation?.loading}
-        handleDelete={handleDelete}
-      />)}
-     
+      {deliveryLocation?.data?.locations && (
+        <DeliveryLocationTable
+          data={deliveryLocation?.data?.locations}
+          loading={deliveryLocation?.loading}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default DeliveryLocations
+export default DeliveryLocations;

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import UpdateTimeSlot from './UpdateTimeSlot'
+import ExpirySession from "../../utils/expirySession";
+
 
 const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
@@ -22,6 +24,8 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot, handleDelete
     setSearchText('')
   }
   
+  const { admin } = ExpirySession.get("user");
+
 
   const columns = [
     {
@@ -101,30 +105,73 @@ const TimeSlotTable = ({ data, loading, showTimeSlot, hideTimeSlot, handleDelete
       align: 'center',
       render: (singleData) => (
         <>
-          <div>
+
+        {admin?.level === 0 && ( <div>
 
 
-            <Button style={{ marginRight: '5px' }} title='Edit timeslot'>
-              <UpdateTimeSlot timeslot={singleData} />
-            </Button>
+<Button style={{ marginRight: '5px' }} title='Edit timeslot'>
+  <UpdateTimeSlot timeslot={singleData} />
+</Button>
 
-            <Button style={{ marginRight: '5px' }}
-            danger
-            onClick={() => handleDelete(singleData)}
-            title='delete time slot'
-          >
-            delete
-          </Button>
+<Button style={{ marginRight: '5px' }}
+danger
+onClick={() => handleDelete(singleData)}
+title='delete time slot'
+>
+delete
+</Button>
 
-            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
-            
-              checked={singleData?.is_available === 1}
-              onChange={singleData?.is_available === 0 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
-            />
-    
+<Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
 
-          
-          </div>
+  checked={singleData?.is_available === 1}
+  onChange={singleData?.is_available === 0 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
+/>
+
+
+
+</div>)}
+
+{admin?.level === 1 && ( <div>
+
+
+<Button style={{ marginRight: '5px' }} title='Edit timeslot'>
+  <UpdateTimeSlot timeslot={singleData} />
+</Button>
+
+
+<Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
+
+  checked={singleData?.is_available === 1}
+  onChange={singleData?.is_available === 0 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
+/>
+
+
+
+</div>)}
+
+{admin?.level === 2 && ( <div>
+
+
+
+<Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
+
+  checked={singleData?.is_available === 1}
+  onChange={singleData?.is_available === 0 ? () => showTimeSlot(singleData?.id) : () => hideTimeSlot(singleData?.id)}
+/>
+
+
+
+</div>)}
+
+{admin?.level === 3 && ( <div>
+
+N/a
+
+
+
+</div>)}
+
+         
         </>
       ),
     },

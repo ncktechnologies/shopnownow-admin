@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { getColumnSearchProps } from '../../utils/tableColSearch'
 import { NumericFormat } from 'react-number-format'
+import ExpirySession from "../../utils/expirySession";
+
 
 const OrderTable = ({ data, loading, handleDelete }) => {
   const [searchText, setSearchText] = useState('')
@@ -21,6 +23,9 @@ const OrderTable = ({ data, loading, handleDelete }) => {
     clearFilters()
     setSearchText('')
   }
+
+  const { admin } = ExpirySession.get("user");
+
 
   const columns = [
     {
@@ -165,7 +170,7 @@ const OrderTable = ({ data, loading, handleDelete }) => {
       align: 'center',
       render: (singleData) => (
         <>
-          <div>
+{admin.level === 0 && ( <div>
             <Button style={{ marginRight: '5px' }} title='View product details'>
               <Link to={`/order/details/${singleData?.id}`}>{'View'}</Link>
             </Button>
@@ -176,7 +181,13 @@ const OrderTable = ({ data, loading, handleDelete }) => {
           >
             delete
           </Button>
-          </div>
+          </div>)}
+
+          {(admin.level === 1 || admin.level === 2 || admin.level === 3) && ( <div>
+            <Button style={{ marginRight: '5px' }} title='View product details'>
+              <Link to={`/order/details/${singleData?.id}`}>{'View'}</Link>
+            </Button>
+          </div>)}
      
         </>
       ),

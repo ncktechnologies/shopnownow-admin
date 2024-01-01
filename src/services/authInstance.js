@@ -1,6 +1,6 @@
 import axios from "axios";
 import ExpirySession from "../utils/expirySession";
-export const liveBaseURL = "https://now.ncktech.com/api/v1/";
+export const liveBaseURL = "https://api.shopnownow.co/api/v1/";
 
 const instance = axios.create({
   // baseURL: testBaseURL,

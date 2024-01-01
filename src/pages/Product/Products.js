@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, notification, PageHeader } from "antd";
+import { Button, notification, PageHeader, Pagination } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import CreateProduct from './CreateProduct'
+import CreateProduct from "./CreateProduct";
 import {
   getAllProducts,
   deleteProduct,
@@ -10,13 +10,12 @@ import {
 import { Link } from "react-router-dom";
 import ProductTable from "./ProductTable";
 import styled from "styled-components";
+import ExpirySession from "../../utils/expirySession";
 
 const Products = (props) => {
   const { products } = useSelector((state) => state);
-
   const dispatch = useDispatch();
-
-console.log(products)
+  const [currentPage, setCurrentPage] = useState(products?.data?.current_page);
   const handleDelete = ({ id }) => {
     // alert('id', id)
     // return
@@ -49,57 +48,76 @@ console.log(products)
   };
 
   useEffect(() => {
-    dispatch(getAllProducts());
-  }, []);
+    dispatch(getAllProducts(currentPage));
+  }, [currentPage]);
+
+  console.log(products);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
 
   const [isChecked, setIsChecked] = useState();
 
-
   const handleHideShowProduct = (id) => {
-  
     dispatch(hideShowProduct(id))
-    .then((response)=> {
-      if (response.type === "product/hideShowProduct/fulfilled") {
-        setIsChecked(!isChecked)
-        dispatch(getAllProducts());
-              notification.success({
-                message: " product updated successfully",
-              });
-            } else if (response.type === "product/hideShowProduct/rejected") {
-              notification.error({
-                message:
-                  response?.payload?.message ||
-                  "Error updating product, please try again",
-              });
-            }
-            
-    })
-    .catch((error) => {
-          notification.error({
-            message: "Error deleting category, please try again later",
+      .then((response) => {
+        if (response.type === "product/hideShowProduct/fulfilled") {
+          setIsChecked(!isChecked);
+          dispatch(getAllProducts());
+          notification.success({
+            message: " product updated successfully",
           });
+        } else if (response.type === "product/hideShowProduct/rejected") {
+          notification.error({
+            message:
+              response?.payload?.message ||
+              "Error updating product, please try again",
+          });
+        }
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error deleting category, please try again later",
         });
-    
-    
-      };
-
+      });
+  };
+  const { admin } = ExpirySession.get("user");
 
   return (
     <div>
-      <PageHeader   extra={[
-          <Button key='CreateProduct' style={{color: '#ff0303', border: '1px solid #ff0303'}}>
-            <CreateProduct />
-          </Button>,
-        ]} title="Products" />
+      {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ? (
+        <PageHeader
+          extra={[
+            <Button
+              key="CreateProduct"
+              style={{ color: "#ff0303", border: "1px solid #ff0303" }}
+            >
+              <CreateProduct />
+            </Button>,
+          ]}
+          title="Products"
+        />
+      ) : (
+        <PageHeader extra={[]} title="Products" />
+      )}
 
-      {products?.data && (
+{products?.data && (
         <ProductTable
-          data={products}
+          data={products?.data?.data}
           loading={products?.loading}
           handleDelete={handleDelete}
           hideShowProduct={handleHideShowProduct}
         />
       )}
+      <StyledDiv>
+        <Pagination
+          current={currentPage}
+          total={products?.totalPages * 10} // Assuming 10 items per page
+          onChange={handlePageChange}
+        />
+      </StyledDiv>
     </div>
   );
 };
