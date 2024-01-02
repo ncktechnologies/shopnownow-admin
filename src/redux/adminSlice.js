@@ -83,7 +83,7 @@ const initialState = {
 }
 
 const slice = createSlice({
-  name: 'admin',
+  name: 'admins',
   initialState,
   reducers: {
     checkAll: (state) => {

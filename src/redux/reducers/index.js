@@ -36,7 +36,7 @@ import topup from "../topupSlice";
 import jobs from "../jobSlice";
 import featuredJobs from "../featuredJobSlice";
 import wallet from "../walletSlice";
-import admin from "../adminSlice";
+import admins from "../adminSlice";
 import rider from "../riderSlice";
 import pickup from "../pickupchargeSlice";
 import location from "../locationSlice";
@@ -89,7 +89,7 @@ const rootReducer = combineReducers({
   jobs,
   featuredJobs,
   wallet,
-  admin,
+  admins,
   rider,
   pickup,
   location,

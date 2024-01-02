@@ -4,16 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteAdmin, getAllAdmin } from "../../redux/adminSlice";
 import AdminTable from "./AdminTable";
 import CreateAdmin from "./CreateAdmin";
+import ExpirySession from "../../utils/expirySession";
+
 
 const ListPickupCharges = () => {
-  const { admin } = useSelector((state) => state);
+  const { admins } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllAdmin());
   }, []);
 
-  console.log(admin);
 
   const handleDelete = ({ id }) => {
     if (
@@ -46,22 +47,31 @@ const ListPickupCharges = () => {
       });
   };
 
+  const { admin } = ExpirySession.get("user");
+
+
+
   return (
     <div>
-      {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 && (
+      {admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ? (
         <PageHeader
           extra={[
-            <Button key="CreateAdmin">
+            <Button
+              key="CreateAdmin"
+              style={{ color: "#ff0303", border: "1px solid #ff0303" }}
+            >
               <CreateAdmin />
             </Button>,
           ]}
-          title="Admins"
+          title="Products"
         />
+      ) : (
+        <PageHeader extra={[]} title="Admins" />
       )}
 
       <AdminTable
-        data={admin?.data?.admins}
-        loading={admin.loading}
+        data={admins?.data?.admins}
+        loading={admins.loading}
         handleDelete={handleDelete}
       />
     </div>
