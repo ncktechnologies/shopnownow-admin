@@ -109,6 +109,22 @@ const OrderTable = ({ data, loading, handleDelete }) => {
     },
 
     {
+      title: 'Total order amount',
+      dataIndex: 'total_price',
+      key: 'total_price',
+      render: (total_price) => (
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <NumericFormat
+            value={total_price}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          />
+        </span>
+      ),
+    },
+
+    {
       title: 'Delivery Fee',
       dataIndex: 'delivery_fee',
       key: 'delivery_fee',
