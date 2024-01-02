@@ -186,7 +186,7 @@ const CouponTable = ({ data, loading, handleDelete }) => {
 
 </div>)}
 
-{admin?.level === 1 && ( <div>
+{(admin?.level === 2 || admin?.level === 3) && ( <div>
 
 <Button
   style={{ marginRight: "5px" }}
@@ -198,16 +198,6 @@ const CouponTable = ({ data, loading, handleDelete }) => {
 
 </div>)}
 
-{admin?.level === 3 && ( <div>
-
-<Button
-  style={{ marginRight: "5px" }}
-  title="View category details"
->
-  <Link to={`/coupons/details/${singleData?.id}`}>{"View"}</Link>
-</Button>
-
-</div>)}
          
         </>
       ),

@@ -138,7 +138,7 @@ const BandTable = ({ data, loading }) => {
       align: "center",
       render: (singleData) => (
         <>
-          {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2) && (
+          {(admin?.level === 0 || admin?.level === 1) && (
             <div>
               {" "}
               <Button
@@ -153,7 +153,7 @@ const BandTable = ({ data, loading }) => {
             </div>
           )}
 
-          {admin?.level === 3 && (
+          {(admin?.level === 2 || admin?.level === 3) && (
             <div>
               {" "}
               <Button

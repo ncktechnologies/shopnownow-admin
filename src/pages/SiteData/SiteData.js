@@ -25,7 +25,7 @@ const SiteData = () => {
 
   return (
     <div>
-{(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ? ( <PageHeader
+{(admin?.level === 0 || admin?.level === 1 ) ? ( <PageHeader
         extra={[
           <Button
             key="editSiteData"
