@@ -81,11 +81,11 @@ function CreateQuickGuide() {
 
   return (
     <>
-      <span onClick={handleShow}>Create quick guide</span>
+      <span onClick={handleShow}>Create Quick Guide</span>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Create quick guide</Modal.Title>
+          <Modal.Title>Create Quick Guide</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreateQuickGuide}>
