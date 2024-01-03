@@ -1,97 +1,112 @@
-import { Form, Input, Button, Typography } from 'antd'
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import { Form, Input, Button, Typography } from "antd";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import Logo from '../../assets/logo.png'
-import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../../redux/authSlice'
+import Logo from "../../assets/logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/authSlice";
 
 const Login = () => {
-  const [form] = Form.useForm()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { loading } = useSelector((state) => state?.auth)
+  const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state?.auth);
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   const onFinish = (value) => {
     dispatch(login(value)).then((response) => {
-      console.log(response)
-      if (response?.type === 'auth/login/rejected') {
-        setError({ error: true, message: response?.payload?.message })
-      } else if (response?.type === 'auth/login/fulfilled') {
-        navigate('/dashboard')
+      console.log(response);
+      if (response?.type === "auth/login/rejected") {
+        setError({ error: true, message: response?.payload?.message });
+      } else if (response?.type === "auth/login/fulfilled") {
+        navigate("/dashboard");
       }
-    })
-  }
+    });
+  };
 
   return (
     <LoginContainer>
-      <div className='logo'>
-        <picture>       
-          <img style={{ padding: '5px', width: 'auto', height: '100px' }} src={Logo} alt='helpa' />
+      <div className="logo">
+        <picture>
+          <img
+            style={{ padding: "5px", width: "auto", height: "150px" }}
+            src={Logo}
+            alt="helpa"
+          />
         </picture>
-        <Typography.Title style={{ textAlign: 'center' }} level={2}></Typography.Title>
-        <Typography.Title level={2} style={{ textAlign: 'center' }}>Login</Typography.Title>
+        <Typography.Title
+          style={{ textAlign: "center" }}
+          level={2}
+        ></Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: "center" }}>
+          Login
+        </Typography.Title>
         <br />
       </div>
       <Form
-        requiredMark='optional'
+        requiredMark="optional"
         form={form}
         onFinish={onFinish}
-        name='multi-form'
-        layout='vertical'
-        autoComplete='false'
+        name="multi-form"
+        layout="vertical"
+        autoComplete="false"
       >
         <Form.Item
           rules={[
             {
               required: true,
-              message: 'Please enter your email address',
+              message: "Please enter your email address",
             },
             {
-              type: 'email',
-              message: 'Please enter a valid email',
+              type: "email",
+              message: "Please enter a valid email",
             },
           ]}
-          label='Email '
-          name='email'
+          label="Email "
+          name="email"
         >
-          <Input size='large' placeholder='Email' autoComplete={'off'} />
+          <Input size="large" placeholder="Email" autoComplete={"off"} />
         </Form.Item>
         <Form.Item
           rules={[
             {
               required: true,
-              message: 'Please enter your password',
+              message: "Please enter your password",
             },
           ]}
-          label='Password '
-          name='password'
+          label="Password "
+          name="password"
         >
-          <Input autoComplete='off' size='large' type='password' />
+          <Input autoComplete="off" size="large" type="password" />
         </Form.Item>
         <Form.Item>
-          <Button loading={loading} size='large' htmlType='submit' style={{color: '#fff', backgroundColor:'#FF0303'}} block>
+          <Button
+            loading={loading}
+            size="large"
+            htmlType="submit"
+            style={{ color: "#fff", backgroundColor: "#FF0303" }}
+            block
+          >
             Sign In
           </Button>
         </Form.Item>
       </Form>
-      {error?.error && <Typography.Text type='danger'>{error?.message}</Typography.Text>}
-
-
+      {error?.error && (
+        <Typography.Text type="danger">{error?.message}</Typography.Text>
+      )}
     </LoginContainer>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
 
 const LoginContainer = styled.div`
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
   padding: 2rem;
   width: 100%;
-font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   background-color: white;
   border-radius: 0.5rem;
 
@@ -126,4 +141,4 @@ font-family: 'Inter', sans-serif !important;
       white-space: nowrap;
     }
   }
-`
+`;
