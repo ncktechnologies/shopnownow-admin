@@ -20,6 +20,8 @@ const SiteData = () => {
     dispatch(getAllSiteData());
   }, []);
 
+  console.log(sitedata)
+
   const { admin } = ExpirySession.get("user");
 
 
@@ -57,6 +59,23 @@ const SiteData = () => {
                   </div>
                 }
               />
+
+{/* <Meta
+                description={
+                  <div className="metaDescription">
+                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
+                      <h2>FAQ</h2>
+
+                      {sitedata?.data?.faq?.map((data, i) => {
+                        <div key={i}>
+                          <strong>Question: {data?.question}</strong>
+                          <strong>Answer: {data?.answer}</strong>
+                        </div>;
+                      })}
+                    </div>
+                  </div>
+                }
+              /> */}
             </Card>
             <Card className="userInfo__card">
               <Meta

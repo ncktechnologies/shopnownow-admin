@@ -122,20 +122,7 @@ function CreateCourse() {
     formData.append('content_source_url', CourseFormData?.content_source_url)
     formData.append('description', CourseFormData?.description)
 
-    // const formData = {
-    //   subject_id: CourseFormData?.subject_id,
-    //   learner_class_id: CourseFormData?.learner_class_id,
-    //   learner_age_id: CourseFormData?.learner_age_id,
-    //   course_title: CourseFormData?.course_title,
-    //   course_fee: CourseFormData?.course_fee,
-    //   percentage_discount: CourseFormData?.percentage_discount,
-    //   read_duration: CourseFormData?.read_duration,
-    //   content_source_url: CourseFormData?.content_source_url,
-    //   thumbnail: image,
-    //   description: CourseFormData?.description,
-    //   course_contents: [{ course_content_url: '' }],
-    // }
-
+ 
     setConfirmLoading(true)
     dispatch(createCourse(formData))
       .then((response) => {

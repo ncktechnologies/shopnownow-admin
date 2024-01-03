@@ -80,14 +80,7 @@ const Login = () => {
       </Form>
       {error?.error && <Typography.Text type='danger'>{error?.message}</Typography.Text>}
 
-      <div className='no-account'>
-        <Typography.Text >
-          <Link style={{color: '#FF0303'}} className='forgot-password' to='/reset-password'>
-            Forgot password?
-          </Link>
-        </Typography.Text>
-       
-      </div>
+
     </LoginContainer>
   )
 }
