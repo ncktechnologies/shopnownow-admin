@@ -152,10 +152,10 @@ function Createadmin() {
               >
                 <option>Select level</option>
 
-                <option value="0">Super admin</option>
+                <option value="0">Super Admin</option>
                 <option value="1">Manager</option>
                 <option value="2">Supervisor</option>
-                <option value="3">Customer care</option>
+                <option value="3">Customer Care</option>
               </Form.Select>
             </Form.Group>
     

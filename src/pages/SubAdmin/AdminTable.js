@@ -82,7 +82,7 @@ const AdminTable = ({ data, loading, handleDelete }) => {
         } else if (level === 2) {
           return <div>Supervisor</div>;
         } else {
-          return <div>Customer care</div>;
+          return <div>Customer Care</div>;
         }
       },
 

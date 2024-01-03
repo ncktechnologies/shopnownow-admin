@@ -91,11 +91,11 @@ function UpdateSiteData({ sitedata }) {
 
   return (
     <>
-      <span onClick={handleShow}>Edit Sitedata</span>
+      <span onClick={handleShow}>Edit Site Data</span>
 
       <Modal show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton onClick={clearFormData}>
-          <Modal.Title>Edit sitedata</Modal.Title>
+          <Modal.Title>Edit Site data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleEditSiteData}>
