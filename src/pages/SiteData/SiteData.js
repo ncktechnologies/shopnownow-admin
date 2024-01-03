@@ -11,7 +11,6 @@ import { Avatar, Card, Typography } from "antd";
 import Meta from "antd/lib/card/Meta";
 import ExpirySession from "../../utils/expirySession";
 
-
 const SiteData = () => {
   const { sitedata } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -20,14 +19,14 @@ const SiteData = () => {
     dispatch(getAllSiteData());
   }, []);
 
-  console.log(sitedata)
-
   const { admin } = ExpirySession.get("user");
 
+  const faqJson = sitedata?.data?.faq && JSON.parse(sitedata?.data?.faq);
+  console.log(faqJson);
 
   return (
     <div>
-{(admin?.level === 0 || admin?.level === 1 ) ? ( <PageHeader
+      {(admin?.level === 0 || admin?.level === 1 ) ? ( <PageHeader
         extra={[
           <Button
             key="editSiteData"
@@ -43,7 +42,6 @@ const SiteData = () => {
       ]}
       title="Site Data"
     /> }
-     
 
       <StyledContainer>
         <div>
@@ -54,28 +52,18 @@ const SiteData = () => {
                   <div className="metaDescription">
                     <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
                       <h2>FAQ</h2>
-                      <strong>{sitedata?.data?.faq}</strong>
+
+                      {
+                        faqJson?.map((data, i) => (
+                          <div key={i}>
+                            <div><strong>Question: {data?.question}</strong></div>
+                           <div><strong>Answer: {data?.answer}</strong></div> 
+                          </div>
+                        ))}
                     </div>
                   </div>
                 }
               />
-
-{/* <Meta
-                description={
-                  <div className="metaDescription">
-                    <div className="flex align-middle items-center gap-4 flex-wrap article-detail">
-                      <h2>FAQ</h2>
-
-                      {sitedata?.data?.faq?.map((data, i) => {
-                        <div key={i}>
-                          <strong>Question: {data?.question}</strong>
-                          <strong>Answer: {data?.answer}</strong>
-                        </div>;
-                      })}
-                    </div>
-                  </div>
-                }
-              /> */}
             </Card>
             <Card className="userInfo__card">
               <Meta

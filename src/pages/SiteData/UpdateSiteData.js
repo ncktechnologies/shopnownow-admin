@@ -8,31 +8,25 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { editSiteData, getAllSiteData } from "../../redux/siteDataSlice";
 import { notification } from "antd";
-import InputGroup from "react-bootstrap/InputGroup";
 
 
 const initialFormState = {
-  faq: "",
+  faq: [
+    {
+      question: "",
+      answer: "",
+    },
+  ],
   terms_and_conditions: "",
   privacy_policy: "",
   contact_data: "",
 };
 
-// const initialFormState = {
-//   faq: [
-//     {
-//       question: "",
-//       answer: "",
-//     },
-//   ],
-//   terms_and_conditions: "",
-//   privacy_policy: "",
-//   contact_data: "",
-// };
-
 function UpdateSiteData({ sitedata }) {
   const [show, setShow] = useState(false);
   const [sitedataFormData, setsitedataFormData] = useState(initialFormState);
+  const [faqArray, setfaqArray] = useState(initialFormState.faq);
+
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const dispatch = useDispatch();
@@ -40,30 +34,34 @@ function UpdateSiteData({ sitedata }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const faqJson = sitedata?.data?.faq && JSON.parse(sitedata?.data?.faq);
+
   useEffect(() => {
     setsitedataFormData({
-      faq: sitedata?.data?.faq,
+      faq: faqJson,
       terms_and_conditions: sitedata?.data?.terms_and_conditions,
       privacy_policy: sitedata?.data?.privacy_policy,
       contact_data: sitedata?.data?.contact_data,
     });
+  
+    setfaqArray(faqJson || initialFormState.faq);
   }, [sitedata]);
+  
 
-  const [faqArray, setfaqArray] = useState(
-    sitedata?.data?.faq?.map((data) => {
-      return {
-        question: data?.question,
-        answer: data?.answer,
-      };
-    }) || [""]
-  );
+
+  
+  
+
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
-
-    if (name === "course_content_url") {
+  
+    if (name === "question" || name === "answer") {
       const newFaq = [...faqArray];
-      newFaq[index] = value;
+      newFaq[index] = {
+        ...newFaq[index],
+        [name]: value,
+      };
       setfaqArray(newFaq);
     } else {
       setsitedataFormData({
@@ -72,14 +70,18 @@ function UpdateSiteData({ sitedata }) {
       });
     }
   };
+  
+  
+  
 
   const addFormFields = () => {
     if (faqArray.length >= 10) {
       alert("You can't add more than 10 items");
       return;
     }
-    setfaqArray([...faqArray, ""]);
+    setfaqArray([...faqArray, { question: "", answer: "" }]);
   };
+  
 
   const removeFormFields = (index) => {
     if (faqArray.length > 1) {
@@ -89,62 +91,42 @@ function UpdateSiteData({ sitedata }) {
     }
   };
 
+
+
   const clearFormData = () => {
     setsitedataFormData({
-      faq: "",
+      faq: [
+    {
+      question: "",
+      answer: "",
+   },
+  ],
       terms_and_conditions: "",
       privacy_policy: "",
       contact_data: "",
     });
   };
 
-  // const clearFormData = () => {
-  //   setsitedataFormData({
-  //     faq: [
-  //   {
-  //     question: "",
-  //     answer: "",
-  //  },
-  // ],
-  //     terms_and_conditions: "",
-  //     privacy_policy: "",
-  //     contact_data: "",
-  //   });
-  // };
-
   const handleEditSiteData = (e) => {
     e.preventDefault();
 
-    let faqArrayChanged = false;
-    if (sitedata?.data?.faq && sitedata?.data?.faq.length === faqArray.length) {
-      faqArrayChanged = sitedata?.data?.faq.some((faq, index) => {
-        return faq.question || faq.answer !== faqArray[index];
-      });
+
+
+      const data = {
+
+        faq: faqArray.map((data)=> ({question: data.question, answer: data.answer })),
+
+        terms_and_conditions: sitedataFormData.terms_and_conditions,
+        privacy_policy: sitedataFormData.privacy_policy,
+        contact_data: sitedataFormData.contact_data
+
     }
-
-    const data = {
-      faq: sitedataFormData.faq,
-      terms_and_conditions: sitedataFormData?.terms_and_conditions,
-      privacy_policy: sitedataFormData?.privacy_policy,
-      contact_data: sitedataFormData?.contact_data,
-    };
-
-    //   const data = {
-
-    //     faq: faqArrayChanged  ? faqArray.map((data) => ({
-    //       question: data?.question,
-    //       answer: data?.answer,
-
-    //     })) : sitedata?.data?.faq.map((faq) => ({
-    //       question: faq.question,
-    //       answer: faq.answer,
-    //     })), // Use default values if contents haven't changed
-
-    // }
+  
 
     setConfirmLoading(true);
     dispatch(editSiteData(data))
       .then((response) => {
+        console.log(response)
         setConfirmLoading(false);
         if (response.type === "siteData/edit/fulfilled") {
           dispatch(getAllSiteData());
@@ -172,46 +154,31 @@ function UpdateSiteData({ sitedata }) {
     <>
       <span onClick={handleShow}>Edit Site Data</span>
 
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal show={show} onHide={handleClose} size="xl">
         <Modal.Header closeButton onClick={clearFormData}>
           <Modal.Title>Edit Site data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleEditSiteData}>
-            <Form.Group
-              className="mb-3"
-              controlId="exampleForm.ControlTextarea1"
-              style={{ marginBottom: "10px" }}
-            >
-              <Form.Label>FAQ </Form.Label>
-              <Form.Control
-                as="textarea"
-                style={{ height: "200px" }}
-                name="faq"
-                onChange={(evt) => handleInputChange(evt)}
-                defaultValue={sitedataFormData.faq}
-              />
-            </Form.Group>
-
+      
             <h6>
               <strong>Add FAQ</strong>
             </h6>
 
-            {faqArray?.map((data, index) => (
+            {faqJson && faqArray?.map((data, index) => (
               <div className="form-inline" key={index}>
-                <InputGroup>
                   <Form.Group
                     className="mb-3"
                     controlId="exampleForm.ControlTextarea1"
                     style={{ marginBottom: "10px" }}
                   >
-                    <Form.Label>Question</Form.Label>
+                    <Form.Label style={{marginTop: '10px'}}>Question</Form.Label>
                     <Form.Control
                       as="textarea"
-                      style={{ height: "200px" }}
-                      name="faq"
-                      onChange={(evt) => handleInputChange(evt)}
-                      defaultValue={data.question}
+                      style={{ height: "100px" }}
+                      name="question"
+                      onChange={(evt) => handleInputChange(evt, index)}
+                      defaultValue={data?.question}
                     />
                   </Form.Group>
                   <Form.Group
@@ -222,10 +189,10 @@ function UpdateSiteData({ sitedata }) {
                     <Form.Label>Answer</Form.Label>
                     <Form.Control
                       as="textarea"
-                      style={{ height: "200px" }}
-                      name="faq"
-                      onChange={(evt) => handleInputChange(evt)}
-                      defaultValue={data.answer}
+                      style={{ height: "100px" }}
+                      name="answer"
+                      onChange={(evt) => handleInputChange(evt, index)}
+                      defaultValue={data?.answer}
                     />
                   </Form.Group>
 
@@ -233,23 +200,27 @@ function UpdateSiteData({ sitedata }) {
                     <span
                       className="button remove"
                       onClick={() => removeFormFields(index)}
-                      style={{ color: "red", cursor: "pointer" }}
+                      style={{ color: "red", cursor: "pointer",}}
                       title="Delete from list"
                     >
                       Remove
                     </span>
                   ) : null}
-                </InputGroup>
               </div>
             ))}
 
-            <div className="button-section">
+            <div className="button-section" style={{display: 'flex', justifyContent: 'flex-end'}}>
               <button
-                className="button add mb-3 float-centre"
+  style={{
+    background: "#ff0303",
+    color: "#fff",
+    border: "none",
+    padding: '5px 10px'
+  }}                className="button add mb-3 float-centre"
                 type="button"
                 onClick={() => addFormFields()}
               >
-                Add More
+                Add more FAQ Q/A
               </button>
             </div>
 

@@ -86,9 +86,9 @@ const AppSider = () => {
     <>
       <StyledLogo className='logo'>
         {!app.siderCollapsed ? (
-          <img style={{ padding: '5px', width: 'auto', height: '80px'}} src={Logo} alt='whoosh' />
+          <img style={{ padding: '5px', width: 'auto', height: '120px'}} src={Logo} alt='whoosh' />
         ) : (
-          <img style={{ padding: '5px', width: 'auto', height: '80px' }} src={Logosmall} alt='whoosh' />
+          <img style={{ padding: '5px', width: 'auto', height: '120px' }} src={Logosmall} alt='whoosh' />
         )}
   
       </StyledLogo>

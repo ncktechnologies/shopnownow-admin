@@ -69,7 +69,7 @@ const Notifications = () => {
       />
 
       <div style={{ paddingTop: "150px", textAlign: "center" }}>
-        <img src={logo} style={{ height: "200px", margin: "auto" }} alt="" />
+        <img src={logo} style={{ height: "250px", margin: "auto" }} alt="" />
       </div>
     </div>
   );
