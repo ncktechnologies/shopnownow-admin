@@ -93,6 +93,22 @@ const OrderTable = ({ data, loading, handleDelete }) => {
     },
 
     {
+      title: 'Quantity',
+      dataIndex: 'quantities',
+      key: 'quantities',
+      ...getColumnSearchProps({
+        dataIndex: 'quantities',
+        handleReset,
+        searchInput,
+        handleSearch,
+        setSearchedColumn,
+        searchText,
+        setSearchText,
+        searchedColumn,
+      }),
+    },
+
+    {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
