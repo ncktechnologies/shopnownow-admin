@@ -19,12 +19,11 @@ const Products = (props) => {
 
   const [loading, setLoading] = useState(products?.loading);
 
+
   useEffect(() => {
     const fetchData = () => {
       try {
-        console.log("Fetching products for page:", currentPage);
         dispatch(getAllProducts(currentPage));
-        console.log("Products fetched successfully");
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -112,7 +111,6 @@ const Products = (props) => {
 
   const linkArray = products?.data?.links?.slice(1, -1);
 
-  console.log(linkArray);
 
   return (
     <div>

@@ -9,35 +9,36 @@ import { editProduct, getAllProducts } from "../../redux/productSlice";
 import { getAllCategories } from "../../redux/categorySlice";
 import { notification } from "antd";
 
-
 const initialFormState = {
   name: "",
   category_id: "",
   price: "",
-  thumbnail: "",
-  unit_of_measurement: ""
+  thumbnail_url: "",
+  unit_of_measurement: "",
 };
 
-function EditProduct({data}) {
+function EditProduct({ data }) {
   const [show, setShow] = useState(false);
   const [image, setImage] = useState("");
   const [productFormData, setProductFormData] = useState(initialFormState);
+  const [isImageVisible, setIsImageVisible] = useState(true);
+  const [isImageChanged, setIsImageChanged] = useState(false);
 
   const { categories } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(getAllCategories())
-  }, [])
-  
+    dispatch(getAllCategories());
+  }, []);
+
   const categories_list =
-  categories?.data &&
-  categories?.data?.map((category, key) => {
-    return (
-      <option value={category?.id} key={key}>
-        {category?.name}
-      </option>
-    );
-  });
+    categories?.data &&
+    categories?.data?.map((category, key) => {
+      return (
+        <option value={category?.id} key={key}>
+          {category?.name}
+        </option>
+      );
+    });
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const dispatch = useDispatch();
@@ -46,12 +47,17 @@ function EditProduct({data}) {
   const handleShow = () => setShow(true);
 
   const onChangeImage = (e) => {
-    setImage(e.target.files[0]);
+    const newImage = e.target.files && e.target.files[0];
+
+    if (newImage) {
+      setImage(e.target.files[0]);
+
+      setIsImageChanged(true);
+    } else {
+      setImage(data.thumbnail || ""); // Reset to the original image URL or an empty string if no original URL is available
+      setIsImageChanged(false);
+    }
   };
-
-
-
- 
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -69,13 +75,28 @@ function EditProduct({data}) {
     });
   };
 
+  useEffect(() => {
+    setProductFormData({
+      name: data.name,
+      category_id: data.category_id,
+      price: data.price,
+      thumbnail: data?.thumbnail_url,
+      unit_of_measurement: data.unit_of_measurement,
+    });
+    setImage(data?.thumbnail_url);
+  }, [data]);
+
+  const toggleImageVisibility = () => {
+    setIsImageVisible(!isImageVisible);
+  };
+
   const clearFormData = () => {
     setProductFormData({
       name: "",
       category_id: "",
       price: "",
       thumbnail: "",
-      unit_of_measurement: ""
+      unit_of_measurement: "",
     });
     setImage("");
   };
@@ -83,17 +104,18 @@ function EditProduct({data}) {
   const handlecreateproduct = (e) => {
     e.preventDefault();
 
-    var formData = new FormData()
+    var formData = new FormData();
 
     formData.append("category_id", productFormData.category_id);
     formData.append("name", productFormData.name);
     formData.append("price", productFormData.price);
     formData.append("unit_of_measurement", productFormData.unit_of_measurement);
-    formData.append("thumbnail", image);
     formData.append("product_id", data.id);
 
-    
-    
+    if (isImageChanged) {
+      // If the image has changed, append the new image as a file
+      formData.append("thumbnail", image);
+    }
 
     setConfirmLoading(true);
     dispatch(editProduct(formData))
@@ -144,29 +166,30 @@ function EditProduct({data}) {
                 type="text"
                 name="name"
                 placeholder="Enter product name"
-                defaultValue={data?.name}
+                defaultValue={productFormData?.name}
                 onChange={(evt) => handleInputChange(evt)}
               />
             </Form.Group>
 
-            {categories?.data && (<Form.Group
-              controlId="exampleForm.ControlSelect1"
-              style={{ marginBottom: "10px" }}
-            >
-              <Form.Label>Select category</Form.Label>
-              <Form.Select
-                name="category_id" // Add the "name" attribute
-                aria-label="Default select example"
-                required
-                onChange={handleCategoryChange}
-                value={productFormData.category_id}
-                defaultValue={data?.category_id}
-
+            {categories?.data && (
+              <Form.Group
+                controlId="exampleForm.ControlSelect1"
+                style={{ marginBottom: "10px" }}
               >
-               <option>Select category</option>
-                    {categories_list}
-              </Form.Select>
-            </Form.Group>)}
+                <Form.Label>Select category</Form.Label>
+                <Form.Select
+                  name="category_id" // Add the "name" attribute
+                  aria-label="Default select example"
+                  required
+                  onChange={handleCategoryChange}
+                  value={productFormData.category_id}
+                  defaultValue={productFormData?.category_id}
+                >
+                  <option>Select category</option>
+                  {categories_list}
+                </Form.Select>
+              </Form.Group>
+            )}
 
             <Form.Group
               className="mb-3"
@@ -179,8 +202,7 @@ function EditProduct({data}) {
                 name="price"
                 placeholder="Enter price"
                 onChange={(evt) => handleInputChange(evt)}
-                defaultValue={data?.price}
-
+                defaultValue={productFormData?.price}
               />
             </Form.Group>
 
@@ -195,23 +217,48 @@ function EditProduct({data}) {
                 name="unit_of_measurement"
                 placeholder="Enter product unit of measurement"
                 onChange={(evt) => handleInputChange(evt)}
-                defaultValue={data?.unit_of_measurement}
-
+                defaultValue={productFormData?.unit_of_measurement}
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>image</Form.Label>
+              <Form.Label
+                style={{
+                  color: "#ff0303",
+                  cursor: "pointer",
+                }}
+              >
+                Change image
+              </Form.Label>
+
               <Form.Control
                 type="file"
                 name="thumbnail"
-                onChange={(evnt) => onChangeImage(evnt)}
-
+                onChange={(evnt) => {
+                  onChangeImage(evnt);
+                  toggleImageVisibility();
+                }}
+                style={{ display: isImageVisible ? "none" : "block" }}
               />
+
+              <div>
+                {isImageVisible && (
+                  <img
+                    src={image}
+                    alt="Product Thumbnail"
+                    style={{ maxWidth: "100px", marginBottom: "10px" }}
+                  />
+                )}
+              </div>
             </Form.Group>
 
             <Button
-              style={{ marginTop: '10px', color: "#fff", backgroundColor: "#ff0303", border: 'none' }}
+              style={{
+                marginTop: "10px",
+                color: "#fff",
+                backgroundColor: "#ff0303",
+                border: "none",
+              }}
               variant="primary"
               type="submit"
               disabled={confirmLoading ? true : false}

@@ -74,8 +74,16 @@ function UpdateCoupon({ coupon }) {
   };
 
   const formatDate = (date) => {
-    const isoString = date.toISOString();
-    return isoString.slice(0, 10);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'Africa/Lagos', // West Africa Time (GMT+1)
+    };
+  
+    const formattedDate = date.toLocaleString('en-NG', options).replace(/\//g, '-');
+    const [day, month, year] = formattedDate.split('-');
+    return `${year}-${month}-${day}`;
   };
 
   const handleEditCoupon = (e) => {

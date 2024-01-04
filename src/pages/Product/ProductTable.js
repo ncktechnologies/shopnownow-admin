@@ -155,7 +155,7 @@ const ProductTable = ({ data, loading, hideShowProduct }) => {
       key: "id",
       align: "center",
       render: (singleData) => (
-        <Link to={`${singleData?.id}`}>
+        <div>
           {singleData?.thumbnail_url ? (
             <img
               style={{
@@ -176,7 +176,7 @@ const ProductTable = ({ data, loading, hideShowProduct }) => {
               size={50}
             />
           )}
-        </Link>
+        </div>
       ),
     },
 

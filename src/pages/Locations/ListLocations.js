@@ -15,9 +15,7 @@ const ListLocations = () => {
     dispatch(getAllLocations());
   }, []);
 
-
 const [isChecked, setIsChecked] = useState();
-
 
   const handleHideShowLocation = (id) => {
   

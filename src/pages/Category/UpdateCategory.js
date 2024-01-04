@@ -127,6 +127,7 @@ function UpdateCategory({ category }) {
       order: ""
     })
   }
+  
 
   const handleEditCategory = (e) => {
     e.preventDefault()
