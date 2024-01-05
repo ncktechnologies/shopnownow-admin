@@ -26,6 +26,12 @@ const create = async (data) => {
   return response.data;
 };
 
+const search = async (data) => {
+  const response = await AuthAPI.get(`/admin/product/search/${data}`);
+  return response.data;
+};
+
+
 const filter = async (data) => {
   const response = await AuthAPI.post(`/admin/product/filter`, data);
   return response.data;
@@ -60,6 +66,7 @@ export const productService = {
   create,
   edit,
   filter,
+  search,
   deleteOne,
   hideShowProduct,
   addRelatedProduct,

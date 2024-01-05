@@ -11,6 +11,15 @@ export const getAllProducts = createAsyncThunk('product/getAll', async (page, { 
   }
 });
 
+export const searchProduct = createAsyncThunk('product/search', async (page, { rejectWithValue }) => {
+  try {
+    const response = await productService.search(page);
+    return response;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
+  }
+});
+
 export const getOneProduct = createAsyncThunk(
   'product/getOne',
   async (data, { rejectWithValue }) => {
@@ -136,6 +145,22 @@ const slice = createSlice({
       state.loading = false
     },
     [getAllProducts.rejected]: (state, action) => {
+      state.error = true
+      state.message = action.payload
+      state.loading = false
+    },
+
+    [searchProduct.pending]: (state) => {
+      if (state.data.length <= 0) {
+        state.loading = true
+      }
+    },
+    [searchProduct.fulfilled]: (state, action) => {
+      state.error = false
+      state.data = action.payload
+      state.loading = false
+    },
+    [searchProduct.rejected]: (state, action) => {
       state.error = true
       state.message = action.payload
       state.loading = false
