@@ -140,7 +140,6 @@ const Products = (props) => {
     dispatch(getAllProducts(1));
   };
 
-  console.log(searchResults)
 
   return (
     <div>

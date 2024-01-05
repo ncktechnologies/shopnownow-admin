@@ -73,6 +73,21 @@ const ProductTable = ({ data, loading, handleDelete }) => {
       }),
     },
     {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      ...getColumnSearchProps({
+        dataIndex: 'quantity',
+        handleReset,
+        searchInput,
+        handleSearch,
+        setSearchedColumn,
+        searchText,
+        setSearchText,
+        searchedColumn,
+      }),
+    },
+    {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',

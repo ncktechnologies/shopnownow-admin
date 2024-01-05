@@ -43,6 +43,7 @@ const OrderDetails = () => {
     });
   };
 
+  console.log(singleData)
 
   const handleStatus = (e) => {
     e.preventDefault();
