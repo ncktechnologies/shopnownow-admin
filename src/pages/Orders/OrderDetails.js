@@ -137,10 +137,7 @@ const OrderDetails = () => {
                     {singleData?.order?.status || "N/A"}
                   </div>
 
-                  <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
-                    <strong>Quantity:</strong>{" "}
-                    {singleData?.order?.quantities || "N/A"}
-                  </div>
+          
                   <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
                     <strong>Payment type:</strong>{" "}
                     {singleData?.order?.payment_type || "N/A"}
