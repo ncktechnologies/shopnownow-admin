@@ -63,31 +63,31 @@ const LocationTable = ({ data, loading, hideShowLocation }) => {
       ),
     },
 
-    {
-      title: 'Hide/Unhide',
-      key: 'id',
-      align: 'center',
-      render: (singleData) => (
-        <>
+    // {
+    //   title: 'Hide/Unhide',
+    //   key: 'id',
+    //   align: 'center',
+    //   render: (singleData) => (
+    //     <>
 
-        {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ? ( <div>
-          {/* <Button style={{ marginRight: '5px' }} title='Edit Location'>
-              <UpdateHubLocation location={singleData} />
-            </Button> */}
+    //     {(admin?.level === 0 || admin?.level === 1 || admin?.level === 2 ) ? ( <div>
+    //       {/* <Button style={{ marginRight: '5px' }} title='Edit Location'>
+    //           <UpdateHubLocation location={singleData} />
+    //         </Button> */}
 
   
 
 
-            <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
+    //         <Switch style={{backgroundColor: '#ff0303', marginLeft: '10px'}}
             
-            checked={singleData?.hidden === 0}
-            onChange={() => hideShowLocation(singleData?.id)}
-          />
+    //         checked={singleData?.hidden === 0}
+    //         onChange={() => hideShowLocation(singleData?.id)}
+    //       />
          
-          </div>) : 'N/a'}
-        </>
-      ),
-    },
+    //       </div>) : 'N/a'}
+    //     </>
+    //   ),
+    // },
   ]
 
   return (
