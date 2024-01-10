@@ -28,6 +28,7 @@ function CreateDeliveryLocation() {
 
   useEffect(() => {
     dispatch(getAllBands());
+    dispatch(getAllLocations())
   }, []);
 
   const [deliveryLocationFormData, setDeliveryLocationFormData] = useState(initialFormState);

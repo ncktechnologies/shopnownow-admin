@@ -32,6 +32,8 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
 
   useEffect(() => {
     dispatch(getAllBands());
+    dispatch(getAllLocations())
+
   }, []);
 
   const band_list =
@@ -46,9 +48,9 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
 
     const location_list =
     location &&
-    location?.data?.map((location, key) => {
+    location?.data?.map((location) => {
       return (
-        <option value={location?.name} key={key}>
+        <option value={location?.name} key={location?.id}>
           {location?.name}
         </option>
       );
@@ -159,7 +161,7 @@ function UpdateDeliveryLocation({ deliveryLocation }) {
             >
               <Form.Label>Select location</Form.Label>
               <Form.Select
-                name="band_id" // Add the "name" attribute
+                name="location" // Add the "name" attribute
                 aria-label="Default select example"
                 required
                 onChange={handleLocationChange}
