@@ -124,10 +124,22 @@ const OrderDetails = () => {
                     />
                   </div>
                   <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
+                    <strong>Total price: </strong>
+                    <NumericFormat
+                      value={singleData?.order?.total_price}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"₦"}
+                    />
+                  </div>
+                  <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
                     <strong>Delivery info:</strong>{" "}
                     {singleData?.order?.delivery_info || ""}
                   </div>
-
+                  <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
+                    <strong>Discount applied:</strong>{" "}
+                    {singleData?.order?.discount_applied === 1 ?  'Yes': "No"}
+                  </div>
                   <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
                     <strong>Delivery time slot:</strong>{" "}
                     {singleData?.order?.delivery_time_slot || null}
@@ -137,7 +149,10 @@ const OrderDetails = () => {
                     {singleData?.order?.status || "N/A"}
                   </div>
 
-          
+                  <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
+                    <strong>Coupon code:</strong>{" "}
+                    {singleData?.order?.coupon_code || "N/A"}
+                  </div>
                   <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
                     <strong>Payment type:</strong>{" "}
                     {singleData?.order?.payment_type || "N/A"}
@@ -174,11 +189,16 @@ const OrderDetails = () => {
                     {singleData?.order?.recipient_phone || "N/A"}
                   </div>
 
-            
+                  <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
+                    <strong>Scheduled date:</strong>{" "}
+                    {singleData?.order?.scheduled_date ? (moment(singleData?.order?.scheduled_date).format("DD MMM YYYY")) : "N/A"}
+                  </div>
                   <div className="flex align-middle items-center gap-4 flex-wrap insuranceprice">
                     <strong>Created At:</strong>{" "}
-                    {moment(singleData.created_at).format("DD MMM YYYY") || ""}
+                    {singleData?.order?.created_at ? (moment(singleData?.order?.created_at).format("DD MMM YYYY")) : "N/A"}
                   </div>
+            
+            
 
                   <div className="mb-3 mt-3">
                     <Form.Group
@@ -198,7 +218,7 @@ const OrderDetails = () => {
                           aria-label="Default select example"
                           defaultValue={singleData?.order?.status}
                         >
-                          <option value="pending">Pending</option>
+                          <option value="paid">Paid</option>
                           <option value="picked">Picked</option>
                           <option value="delivered">Delivered</option>
                           <option value="cancelled">Cancelled</option>
