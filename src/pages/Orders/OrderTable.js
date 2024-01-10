@@ -147,17 +147,16 @@ const OrderTable = ({ data, loading, handleDelete }) => {
       title: 'Tax',
       dataIndex: 'tax',
       key: 'tax',
-      ...getColumnSearchProps({
-        dataIndex: 'tax',
-        handleReset,
-        searchInput,
-        handleSearch,
-        setSearchedColumn,
-        searchText,
-        setSearchText,
-        searchedColumn,
-      }),
-    
+      render: (tax) => (
+        <span style={{ whiteSpace: 'nowrap' }}>
+          <NumericFormat
+            value={tax}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'₦'}
+          />
+        </span>
+      ),
     },
 
   
