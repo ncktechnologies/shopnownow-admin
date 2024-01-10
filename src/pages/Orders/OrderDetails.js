@@ -219,6 +219,8 @@ const OrderDetails = () => {
                           defaultValue={singleData?.order?.status}
                         >
                           <option value="paid">Paid</option>
+                          <option value="pending">Pending</option>
+
                           <option value="picked">Picked</option>
                           <option value="delivered">Delivered</option>
                           <option value="cancelled">Cancelled</option>
