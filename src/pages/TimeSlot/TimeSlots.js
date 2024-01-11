@@ -20,6 +20,8 @@ const TimeSlots = () => {
   }, [])
 
 
+  console.log(timeslot)
+
   const [checked, setIsChecked] =useState(null)
 
   const handleShowTimeSlot = (id) => {
